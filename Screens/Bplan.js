@@ -46,7 +46,7 @@ export default function  Bplan  (   {   route , navigation  }) {
 
 
     try {
-      const response = await fetch( "http://learn-up.app:5000/admin/student_details" , 
+      const response = await fetch( "http://3.123.37.47:5000/admin/student_details" , 
       {   method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -92,7 +92,7 @@ export default function  Bplan  (   {   route , navigation  }) {
 
      
    try {
-      const response = await fetch( "http://learn-up.app:5000/admin/all_bp" ,  
+      const response = await fetch( "http://3.123.37.47:5000/admin/all_bp" ,  
 
       {   method: 'POST',
           headers: {
@@ -159,7 +159,7 @@ export default function  Bplan  (   {   route , navigation  }) {
   const getBP = async () => {  
 
     try {
-      const response = await fetch( "http://learn-up.app:5000/admin/student_bp_name" , 
+      const response = await fetch( "http://3.123.37.47:5000/admin/student_bp_name" , 
       {   method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -207,7 +207,7 @@ export default function  Bplan  (   {   route , navigation  }) {
  /*   const getUserDetails = async () => {  
 
     try {
-      const response = await fetch( "http://learn-up.app:5000/admin/student_details" , 
+      const response = await fetch( "http://3.123.37.47:5000/admin/student_details" , 
       {   method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -305,7 +305,7 @@ export default function  Bplan  (   {   route , navigation  }) {
          
 
         try {
-          const response = await fetch( "http://learn-up.app:5000/admin/bp_answer" , 
+          const response = await fetch( "http://3.123.37.47:5000/admin/bp_answer" , 
           {   method: 'POST',
               headers: {
                 'Accept': 'application/json',

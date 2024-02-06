@@ -5,22 +5,11 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Icon from 'react-native-vector-icons/FontAwesome';  
 import logo_student from "../Images/logo_student.png" ; 
 import vector from "../Images/vector.png" ;  
-import  Module1_0_1 from "../assets/Module1_0_1.mp4" ; 
-import Module_1_1_0 from "../assets/Module_1_1_0.mp4" ; 
-import Module_1_1_2 from "../assets/Module_1_1_2.mp4" ; 
-import Module_1_1_4 from "../assets/Module_1_1_4.mp4" ; 
-import Module_1_1_6 from "../assets/Module_1_1_6.mp4" ; 
-import Module_1_1_8 from "../assets/Module_1_1_8.mp4" ; 
 
 
 
 
 
-
-
-import M2_2_0 from "../assets/M2_2_0.mp4"  ;
-import M2_2_1 from "../assets/M2_2_1.mp4"  ;
-import M2_2_3 from "../assets/M2_2_3.mp4"  ;
 
 
 
@@ -251,7 +240,7 @@ export default function  Home (   {   route , navigation  }) {
 
 
     try {
-      const response = await fetch( "http://learn-up.app:5000/admin/a_module" ,  
+      const response = await fetch( "http://3.123.37.47:5000/admin/a_module" ,  
 
       {   method: 'POST',
           headers: {
@@ -296,7 +285,7 @@ export default function  Home (   {   route , navigation  }) {
    const getData = async () => {  
 
     try {
-      const response = await fetch( "http://learn-up.app:5000/admin/d_program" , 
+      const response = await fetch( "http://3.123.37.47:5000/admin/d_program" , 
       {   method: 'POST',
           headers: {
             'Accept': 'application/json',

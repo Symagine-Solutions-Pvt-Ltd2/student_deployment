@@ -291,7 +291,7 @@ export default function  Quiz  (   {   route , navigation  }) {
      
 
        try {
-        const response = await fetch( "http://learn-up.app:5000/admin/quiz_score" , 
+        const response = await fetch( "http://3.123.37.47:5000/admin/quiz_score" , 
         {   method: 'POST',
             headers: {
               'Accept': 'application/json',

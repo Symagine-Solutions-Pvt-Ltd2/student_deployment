@@ -56,7 +56,7 @@ export default function  Module (   {   route , navigation  }) {
 
 
     try {
-      const response = await fetch( "http://learn-up.app:5000/admin/group_by" ,  
+      const response = await fetch( "http://3.123.37.47:5000s/admin/group_by" ,  
 
       {   method: 'POST',
           headers: {

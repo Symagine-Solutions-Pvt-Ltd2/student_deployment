@@ -27,7 +27,7 @@ export default function  LogIn  (  {   route , navigation  }) {
 
      try {
     //  const response = await fetch( 'http://10.0.2.2:8000/student/login'  ,   
-    const response = await fetch( "http://learn-up.app:5000/student/login"    , 
+    const response = await fetch( "http://3.123.37.47:5000/student/login"    , 
 
     {  method: 'POST', 
 
