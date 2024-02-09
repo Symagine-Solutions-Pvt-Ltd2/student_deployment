@@ -56,7 +56,7 @@ export default function  Module (   {   route , navigation  }) {
 
 
     try {
-      const response = await fetch( "http://3.123.37.47:5000s/admin/group_by" ,  
+      const response = await fetch( "http://3.123.37.47:5000/admin/group_by" ,  
 
       {   method: 'POST',
           headers: {
@@ -284,10 +284,10 @@ text : "quiz"
   return(
 
   <View style={ styles.container}   > 
- <ImageBackground  source={ textBackPic } resizeMode="cover"  style={styles.image} >  
+ <ImageBackground  source={ textBackPic }  resizeMode="cover"  style={styles.image} >  
 
        
- <View  style={ styles.sidebar}   >
+ <View  style={ styles.sidebar}    >
       
     
    
@@ -366,7 +366,7 @@ text : "quiz"
  
           <View   style={ [  styles.box_alignment , {  height : "60%"  , width : '20%' , backgroundColor : "#5E82F4" ,  borderTopRightRadius :25  , borderBottomRightRadius : 25  } ] } >
  
- <Text style = { { color : "#FFF"  , fontWeight : 700 , fontSize : 20} }>{ route.params.name }</Text>
+ <Text style = { { color : "#FFF"  , fontWeight : "700" , fontSize : 20} }>{ route.params.name }</Text>
   </View>
      
  
@@ -381,9 +381,9 @@ text : "quiz"
                
                                    <View style={{    height : "80%"  , width : '75%'    ,   display : "flex"   , alignItems : "flex-start"  , justifyContent : "center"  , paddingLeft : 2  }}>
                                                  
-                             <Text style={{   fontSize : 17  , color : "#353B55"  , fontWeight : 700  , fontStyle : "normal"}}>{ route.params.userData.student_name  }</Text> 
+                             <Text style={{   fontSize : 17  , color : "#353B55"  , fontWeight : "700"  , fontStyle : "normal"}}>{ route.params.userData.student_name  }</Text> 
                
-                             <Text style={{ fontSize : 10  , color : "#5A6198"  , fontWeight : 600  , fontStyle : "normal"  }} >{ route.params.userData.school_name  } </Text>
+                             <Text style={{ fontSize : 10  , color : "#5A6198"  , fontWeight : "600"  , fontStyle : "normal"  }} >{ route.params.userData.school_name  } </Text>
                                              </View>
                                  </View>
  
@@ -615,7 +615,7 @@ text : "quiz"
 
          <View   style={ [  styles.box_alignment , {  height : "60%"  , width : '20%' , backgroundColor : "#5E82F4" ,  borderTopRightRadius :25  , borderBottomRightRadius : 25  } ] } >
 
-<Text style = { { color : "#FFF"  , fontWeight : 700 , fontSize : 20} }>{ route.params.name }</Text>
+<Text style = { { color : "#FFF"  , fontWeight : "700" , fontSize : 20} }>{ route.params.name }</Text>
  </View>
     
 
@@ -629,9 +629,9 @@ text : "quiz"
 
                     <View style={{    height : "80%"  , width : '75%'    ,   display : "flex"   , alignItems : "flex-start"  , justifyContent : "center"  , paddingLeft : 2  }}>
                                   
-              <Text style={{   fontSize : 17  , color : "#353B55"  , fontWeight : 700  , fontStyle : "normal"}}>{ route.params.userData.student_name  }</Text> 
+              <Text style={{   fontSize : 17  , color : "#353B55"  , fontWeight : "700"  , fontStyle : "normal"}}>{ route.params.userData.student_name  }</Text> 
 
-              <Text style={{ fontSize : 10  , color : "#5A6198"  , fontWeight : 600  , fontStyle : "normal"  }} >{ route.params.userData.school_name  } </Text>
+              <Text style={{ fontSize : 10  , color : "#5A6198"  , fontWeight : "600"  , fontStyle : "normal"  }} >{ route.params.userData.school_name  } </Text>
                               </View>
                   </View>
 
@@ -877,7 +877,7 @@ text : "quiz"
    
             <View   style={ [  styles.box_alignment , {  height : "60%"  , width : '20%' , backgroundColor : "#5E82F4" ,  borderTopRightRadius :25  , borderBottomRightRadius : 25  } ] } >
    
-   <Text style = { { color : "#FFF"  , fontWeight : 700 , fontSize : 20} }>{ route.params.name }</Text>
+   <Text style = { { color : "#FFF"  , fontWeight : "700" , fontSize : 20} }>{ route.params.name }</Text>
     </View>
        
    
@@ -893,9 +893,9 @@ text : "quiz"
                
                                    <View style={{    height : "80%"  , width : '75%'    ,   display : "flex"   , alignItems : "flex-start"  , justifyContent : "center"  , paddingLeft : 2  }}>
                                                  
-                             <Text style={{   fontSize : 17  , color : "#353B55"  , fontWeight : 700  , fontStyle : "normal"}}>{ route.params.userData.student_name  }</Text> 
+                             <Text style={{   fontSize : 17  , color : "#353B55"  , fontWeight : "700"  , fontStyle : "normal"}}>{ route.params.userData.student_name  }</Text> 
                
-                             <Text style={{ fontSize : 10  , color : "#5A6198"  , fontWeight : 600  , fontStyle : "normal"  }} >{ route.params.userData.school_name  } </Text>
+                             <Text style={{ fontSize : 10  , color : "#5A6198"  , fontWeight : "600"  , fontStyle : "normal"  }} >{ route.params.userData.school_name  } </Text>
                                              </View>
                                  </View>
    
@@ -1092,7 +1092,7 @@ text : "quiz"
  
           <View   style={ [  styles.box_alignment , {  height : "60%"  , width : '20%' , backgroundColor : "#5E82F4" ,  borderTopRightRadius :25  , borderBottomRightRadius : 25  } ] } >
  
- <Text style = { { color : "#FFF"  , fontWeight : 700 , fontSize : 20} }>{ route.params.name }</Text>
+ <Text style = { { color : "#FFF"  , fontWeight : "700" , fontSize : 20} }>{ route.params.name }</Text>
   </View>
      
  
@@ -1108,9 +1108,9 @@ text : "quiz"
                
                                    <View style={{    height : "80%"  , width : '75%'    ,   display : "flex"   , alignItems : "flex-start"  , justifyContent : "center"  , paddingLeft : 2  }}>
                                                  
-                             <Text style={{   fontSize : 17  , color : "#353B55"  , fontWeight : 700  , fontStyle : "normal"}}>{ route.params.userData.student_name  }</Text> 
+                             <Text style={{   fontSize : 17  , color : "#353B55"  , fontWeight : "700"  , fontStyle : "normal"}}>{ route.params.userData.student_name  }</Text> 
                
-                             <Text style={{ fontSize : 10  , color : "#5A6198"  , fontWeight : 600  , fontStyle : "normal"  }} >{ route.params.userData.school_name  } </Text>
+                             <Text style={{ fontSize : 10  , color : "#5A6198"  , fontWeight : "600"  , fontStyle : "normal"  }} >{ route.params.userData.school_name  } </Text>
                                              </View>
                                  </View>
  
@@ -1123,10 +1123,10 @@ text : "quiz"
              <View  style={{ height : "20%"  , width : "75%"   , borderRadius : 20  , display : "flex",   flexDirection :"row", paddingTop : 5 }} > 
               
 
-             <Text style = { [styles.text1  , { fontSize : 16  , fontWeight : 700  } ]}> Instructions.</Text>  
+             <Text style = { [styles.text1  , { fontSize : 16  , fontWeight : "700"  } ]}> Instructions.</Text>  
 
              <ScrollView style = {{ width : "85%" , height : "100%"}}>
-             <Text style = {[styles.text1  , { fontSize : 14  , fontWeight : 400  ,  width :  "100%"  , height : "100%" } ]}  >{data[currentElement].enter_text}</Text>  
+             <Text style = {[styles.text1  , { fontSize : 14  , fontWeight : "400"  ,  width :  "100%"  , height : "100%" } ]}  >{data[currentElement].enter_text}</Text>  
              </ScrollView>
              </View>
              
@@ -1427,7 +1427,7 @@ const styles = StyleSheet.create({
    text1 : {
 
   
-    fontWeight : 800 , 
+    fontWeight : "800" , 
     lineHeight : 22 , 
     letterSpacing: -0.408 ,
    }

@@ -468,7 +468,7 @@ export default function  Quiz  (   {   route , navigation  }) {
             
                <View   style={ [  styles.box_alignment , {  height : "60%"  , width : '18%' , backgroundColor : "#5E82F4" ,  borderTopRightRadius :25  , borderBottomRightRadius : 25  } ] } >
    
-   <Text style = { { color : "#FFF"  , fontWeight : 700 , fontSize : 20} }>{ route.params.name }</Text>
+   <Text style = { { color : "#FFF"  , fontWeight : "700" , fontSize : 20} }>{ route.params.name }</Text>
     </View>
        
    
@@ -482,9 +482,9 @@ export default function  Quiz  (   {   route , navigation  }) {
   
                       <View style={{    height : "80%"  , width : '75%'    ,   display : "flex"   , alignItems : "flex-start"  , justifyContent : "center"  , paddingLeft : 2  }}>
                                     
-                <Text style={{   fontSize : 17  , color : "#353B55"  , fontWeight : 700  , fontStyle : "normal"}}>{ route.params.userData.student_name  }</Text> 
+                <Text style={{   fontSize : 17  , color : "#353B55"  , fontWeight : "700"  , fontStyle : "normal"}}>{ route.params.userData.student_name  }</Text> 
   
-                <Text style={{ fontSize : 10  , color : "#5A6198"  , fontWeight : 600  , fontStyle : "normal"  }} >{ route.params.userData.school_name  } </Text>
+                <Text style={{ fontSize : 10  , color : "#5A6198"  , fontWeight : "600"  , fontStyle : "normal"  }} >{ route.params.userData.school_name  } </Text>
                                 </View>
                     </View>
               

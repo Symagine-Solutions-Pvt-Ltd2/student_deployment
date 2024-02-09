@@ -17,8 +17,7 @@ export default function  GettingStarted (   {   route , navigation  }) {
 
 
 
-         <View  style={ styles.v1}    > 
-         <Text> 1</Text>
+         <View  style={ styles.v1} > 
          </View> 
 
          <View style={ styles.v2}   >  
@@ -69,8 +68,7 @@ export default function  GettingStarted (   {   route , navigation  }) {
 const styles = StyleSheet.create({ 
 
     container: {
-      flex: 1 , 
-      backgroundColor : 'red'  , 
+      flex: 1 ,  
       display : "flex"  , 
       flexDirection : "row", 
       alignItems : "center"  ,

@@ -1,11 +1,12 @@
-import { StyleSheet, Text, View  , Alert ,  TouchableOpacity    , StatusBar  , ImageBackground,  Image  , BackHandler  } from 'react-native';
+import { StyleSheet, Text, View  , Alert ,  TouchableOpacity    , StatusBar  , ImageBackground,  Image  , BackHandler    , Button  , Platform  } from 'react-native';
 import pic2 from "../Images/pic2.jpg" ;  
 import React, { useState } from "react"; 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/FontAwesome';  
 import logo_student from "../Images/logo_student.png" ; 
 import vector from "../Images/vector.png" ;  
-
+import * as Sharing from 'expo-sharing';
+import * as FileSystem from 'expo-file-system';
 
 
 
@@ -224,6 +225,92 @@ export default function  Home (   {   route , navigation  }) {
    console.log( route.params.userData.program_id ) ;   
    console.log( route.params.userData.student_id ) ; */   
 
+   
+
+
+   // to download certificate 
+    
+   
+  async function download() { 
+
+    const filename = "learn_up_certificate.jpg";  
+
+    try{ 
+      // Your code
+  
+    const result = await FileSystem.downloadAsync(
+      'https://learn-up.s3.eu-central-1.amazonaws.com/2254_20240130_140030_067214.jpg',
+      FileSystem.documentDirectory + filename
+    );
+  
+    // Log the download result
+    console.log(result);
+  
+    // Save the downloaded file
+    saveFile(result.uri, filename, result.headers["Content-Type"]);
+  
+
+}  
+catch(err){
+  // handle rejection
+  console.error(err) ;
+}
+
+}    
+
+  
+
+
+
+
+  // to save file 
+
+async function saveFile(uri, filename, mimetype) { 
+  
+
+
+ 
+  if (Platform.OS === "android") { 
+     
+    try {   
+    Sharing.shareAsync(uri);
+    }
+    catch( err) {
+      alert( err)  ; 
+    }
+
+    /* const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+    
+
+     try {  
+    
+    if (permissions.granted) {
+      const base64 = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 });
+
+      await FileSystem.StorageAccessFramework.createFileAsync(permissions.directoryUri, filename, mimetype)
+        .then(async (uri) => {
+          await FileSystem.writeAsStringAsync(uri, base64, { encoding: FileSystem.EncodingType.Base64 });  
+        })
+        .catch(e => console.log(e));
+    }else  {
+      Sharing.shareAsync(uri);
+    } 
+  }
+  catch( err){
+      // handle rejection
+  console.error(err) ;
+  alert( err) ; 
+
+  }  */
+
+  }
+}
+
+
+
+
+
+  
 
 
 
@@ -427,7 +514,7 @@ export default function  Home (   {   route , navigation  }) {
         
     <ImageBackground  source={pic2 } resizeMode="cover"  style={styles.image} >  
 
-
+       
 
          <View  style={ styles.sidebar}   > 
                 
@@ -465,7 +552,7 @@ export default function  Home (   {   route , navigation  }) {
 
                           <TouchableOpacity  style= {{ height : "15%"  , width : "40%" }} >
                             
-                          <MaterialCommunityIcons name="certificate"  size={30}  color={ "#B6B7D0"} />
+                          <MaterialCommunityIcons name="certificate"  size={30}  color={ "#B6B7D0"}    onPress= {() => {download()} }      />
                           </TouchableOpacity> 
 
 
@@ -518,9 +605,9 @@ export default function  Home (   {   route , navigation  }) {
 
                     <View style={{    height : "80%"  , width : '75%'    ,   display : "flex"   , alignItems : "flex-start"  , justifyContent : "center"  , paddingLeft : 2  }}>
                                   
-              <Text style={{   fontSize : 17  , color : "#353B55"  , fontWeight : 700  , fontStyle : "normal"}}>{ route.params.userData.student_name  }</Text> 
+              <Text style={{   fontSize : 17  , color : "#353B55"  , fontWeight : "700"  , fontStyle : "normal"}}>{ route.params.userData.student_name  }</Text> 
 
-              <Text style={{ fontSize : 10  , color : "#5A6198"  , fontWeight : 600  , fontStyle : "normal"  }} >{ route.params.userData.school_name  } </Text>
+              <Text style={{ fontSize : 10  , color : "#5A6198"  , fontWeight : "600"  , fontStyle : "normal"  }} >{ route.params.userData.school_name  } </Text>
                               </View>
                   </View>
             
@@ -715,7 +802,7 @@ const styles = StyleSheet.create({
   text1 : {
 
    
-    fontWeight: '800' ,
+    fontWeight: "800" ,
     fontStyle: 'normal'  , 
      fontSize: 24 , 
 
@@ -725,7 +812,7 @@ const styles = StyleSheet.create({
   text2 : {
 
    
-    fontWeight: '400' ,
+    fontWeight: "400" ,
     fontStyle: 'normal'  , 
      fontSize: 14 , 
      color : "#B6B7D0"
