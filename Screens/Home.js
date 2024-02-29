@@ -228,6 +228,9 @@ export default function  Home (   {   route , navigation  }) {
    
 
 
+   
+
+
    // to download certificate 
     
    
@@ -550,7 +553,7 @@ async function saveFile(uri, filename, mimetype) {
 
 
 
-                          <TouchableOpacity  style= {{ height : "15%"  , width : "40%" }} >
+                          <TouchableOpacity  style= {{ height : "15%"  , width : "40%" }}  onPress= { download  }   >
                             
                           <MaterialCommunityIcons name="certificate"  size={30}  color={ "#B6B7D0"}    onPress= {() => {download()} }      />
                           </TouchableOpacity> 

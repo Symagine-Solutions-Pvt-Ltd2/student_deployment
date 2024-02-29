@@ -1,10 +1,14 @@
-import { StyleSheet, Text, View  , TextInput , FlatList  ,  TouchableOpacity    , StatusBar  , ImageBackground , Dimensions  , Image } from 'react-native';
+import { StyleSheet, Text, View  , TextInput , FlatList  ,  TouchableOpacity    , StatusBar  , ImageBackground , Dimensions  , Image  , Button   } from 'react-native';
 
 import React from "react";
 import pic3 from "../Images/pic3.jpg" ;  
 import logo_student from "../Images/logo_student.png" ;
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; 
-import vector from "../Images/vector.png" ; 
+import vector from "../Images/vector.png" ;  
+import  file_upload from "../Images/file_upload.jpg" ;
+import hhh from "../Images/hhh.png"  ; 
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'; 
+
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -16,10 +20,11 @@ const windowHeight = Dimensions.get('window').height;
 
 export default function  Bplan  (   {   route , navigation  }) {
        
+ 
 
-   
+
   const [ data  , setData ] = React.useState( [ ] ) ; 
-  
+
   const [ Answer  , setAnswer  ] = React.useState( [ ] ) ;
    
   const [ fetchedBpName  , setFetchedBpName  ] = React.useState( "" ) ;   
@@ -63,7 +68,7 @@ export default function  Bplan  (   {   route , navigation  }) {
       const json = await response.json();
       
 
-          console.log(   json) ;    
+         // console.log(   json) ;    
 
 
        
@@ -109,9 +114,9 @@ export default function  Bplan  (   {   route , navigation  }) {
      );
       const json = await response.json();
 
-     /*    
-        console.log(  json.status  ) ;   
-        console.log( userDetailsIN.bp_name ) ;
+      
+        console.log(  json.data  ) ;   
+         /*  console.log( userDetailsIN.bp_name ) ;
         console.log( bp_name ) ; */
 
 
@@ -360,6 +365,135 @@ export default function  Bplan  (   {   route , navigation  }) {
 
 
 
+   
+  // to use conditional rendering in renderitem 
+
+  const renderItem = ({ item  , index }) => {  
+  
+    if(  item.sub_type === "text"){
+    
+      return (
+        <View style={ styles.row }  >   
+
+                <View  style={[ styles.box_alignment , {  width : "8.09%"    , borderColor :"#B6B7D0"  , borderBottomWidth : 1  , borderRightWidth : 1 } ] }  >
+                 <Text  >  { index+1  }  </Text>
+
+                </View> 
+                <View style={ [  styles.box_alignment , {  width : "23.04%" , borderColor :"#B6B7D0"  , borderBottomWidth : 1  , borderRightWidth : 1 } ]} >
+                 <Text> { item.task_name} </Text>
+
+                </View> 
+
+            
+                <View  style={ [ styles.box_alignment ,  {  width : "43.64%"   , borderColor :"#B6B7D0"  , borderBottomWidth : 1  , borderRightWidth : 1 } ] } >
+     
+
+
+                 <TextInput   autoCorrect={ false}  
+                    placeholder="Type here..."   
+                    defaultValue= { Answer[index]}
+                    onChangeText= { (   value ) => { updateAnswer(  index ,   value ) }}
+                        style = {{ width : "96%"  , backgroundColor : "#FFF"  , height : "50%"  , borderColor :'#5E81F4'  , borderWidth : 1 , borderRadius : 10}} />
+     
+                  
+
+               
+                </View> 
+               
+
+                <View  style={[  styles.box_alignment ,  {  width : "25.26%"  , borderColor :"#B6B7D0"  , borderBottomWidth : 1}]  } >
+                 <Text>  { feedback [index]  } </Text>
+
+                </View>
+          
+       </View>
+       ) ; 
+
+    }else if(  item.sub_type === "both" ){
+    
+      return ( 
+
+        <View style={ styles.row }  >   
+
+        <View  style={[ styles.box_alignment , {  width : "8.09%"    , borderColor :"#B6B7D0"  , borderBottomWidth : 1  , borderRightWidth : 1 } ] }  >
+         <Text  >  { index+1  }  </Text>
+
+        </View> 
+        <View style={ [  styles.box_alignment , {  width : "23.04%" , borderColor :"#B6B7D0"  , borderBottomWidth : 1  , borderRightWidth : 1 } ]} >
+         <Text> { item.task_name} </Text>
+
+        </View> 
+
+    
+        <View  style={ [ styles.box_alignment ,  {  width : "43.64%"   , borderColor :"#B6B7D0"  , borderBottomWidth : 1  , borderRightWidth : 1   , flexDirection  : "row"   , justifyContent : "space-around"} ] } >
+
+
+
+         <TextInput   autoCorrect={ false}  
+            placeholder="Type here..."   
+            defaultValue= { Answer[index]}
+            onChangeText= { (   value ) => { updateAnswer(  index ,   value ) }}
+                style = {{ width : "72%"  , backgroundColor : "#FFF"  , height : "50%"  , borderColor :'#5E81F4'  , borderWidth : 1 , borderRadius : 10}} />
+
+         
+        
+               <TouchableOpacity  style= {{ height : "50%"  , width : "20%" , display  : "flex"   , alignItems : "center" , justifyContent : "center" , flexDirection : "row"  ,  borderColor  : "#5E81F4"  , borderWidth : 1  , borderRadius : 10  , backgroundColor : "#FFF" }}  onPress={() => {  }}  >
+              {/*  <MaterialCommunityIcons name="image"  size={30}  />  */}
+             <FontAwesomeIcon  name="image"  size={30}  /> 
+               </TouchableOpacity>
+        
+        </View> 
+       
+
+        <View  style={[  styles.box_alignment ,  {  width : "25.26%"  , borderColor :"#B6B7D0"  , borderBottomWidth : 1}]  } >
+         <Text>  { feedback [index]  } </Text>
+
+        </View>
+  
+        </View>
+        ) ; 
+
+    }else{
+          
+      return (
+        <View style={ styles.row }  >   
+
+                <View  style={[ styles.box_alignment , {  width : "8.09%"    , borderColor :"#B6B7D0"  , borderBottomWidth : 1  , borderRightWidth : 1 } ] }  >
+                 <Text  >  { index+1  }  </Text>
+
+                </View> 
+                <View style={ [  styles.box_alignment , {  width : "23.04%" , borderColor :"#B6B7D0"  , borderBottomWidth : 1  , borderRightWidth : 1 } ]} >
+                 <Text> { item.task_name} </Text>
+
+                </View> 
+
+            
+                <View  style={ [ styles.box_alignment ,  {  width : "43.64%"   , borderColor :"#B6B7D0"  , borderBottomWidth : 1  , borderRightWidth : 1 } ] } >
+     
+
+
+                <TouchableOpacity  style= {{ height : "50%"  , width : "20%" , display  : "flex"   , alignItems : "center" , justifyContent : "center"  ,  borderColor  : "#5E81F4"  , borderWidth : 1  , borderRadius : 10  , backgroundColor : "#FFF" }}  onPress={() => {  }}  >
+                <FontAwesomeIcon  name="image"  size={30}   />  
+               </TouchableOpacity>
+ 
+
+               
+                </View> 
+               
+
+                <View  style={[  styles.box_alignment ,  {  width : "25.26%"  , borderColor :"#B6B7D0"  , borderBottomWidth : 1}]  } >
+                 <Text>  { feedback [index]  } </Text>
+
+                </View>
+          
+        </View>
+        ) ; 
+
+    }
+
+
+  }
+
 
 
 
@@ -509,37 +643,8 @@ export default function  Bplan  (   {   route , navigation  }) {
                <View style= { styles.main_body  }>
                     
                <FlatList  
-               data={  data } 
-               renderItem={({item  , index }) =>  
-               
-              <View style={ styles.row }  >   
-
-                <View  style={[ styles.box_alignment , {  width : "8.09%"    , borderColor :"#B6B7D0"  , borderBottomWidth : 1  , borderRightWidth : 1 } ] }  >
-                 <Text  >  { index+1  }  </Text>
-
-                </View> 
-                <View style={ [  styles.box_alignment , {  width : "23.04%" , borderColor :"#B6B7D0"  , borderBottomWidth : 1  , borderRightWidth : 1 } ]} >
-                 <Text> { item.task_name} </Text>
-
-                </View>
-
-                <View  style={ [ styles.box_alignment ,  {  width : "43.64%"   , borderColor :"#B6B7D0"  , borderBottomWidth : 1  , borderRightWidth : 1 } ] } >
-                  
-
-                <TextInput   autoCorrect={ false}  
-                    placeholder="Type here..."   
-                    defaultValue= { Answer[index]}
-                    onChangeText= { (   value ) => { updateAnswer(  index ,   value ) }}
-                        style = {{ width : "96%"  , backgroundColor : "#FFF"  , height : "90%"  , borderColor :'#5E81F4'  , borderWidth : 1 , borderRadius : 10}} />
-
-                </View> 
-
-                <View  style={[  styles.box_alignment ,  {  width : "25.26%"  , borderColor :"#B6B7D0"  , borderBottomWidth : 1}]  } >
-                 <Text>  { feedback [index]  } </Text>
-
-                </View>
-          
-              </View>  }
+               data={  data }  
+               renderItem={ renderItem }
                keyExtractor={item => item._id}  
 
             /> 
@@ -734,7 +839,7 @@ const styles = StyleSheet.create({
      row : {
        
       width : "100%" , 
-      height : windowHeight / 4 , 
+      height : windowHeight / 6, 
       display :  "flex" , 
       flexDirection : "row"
 

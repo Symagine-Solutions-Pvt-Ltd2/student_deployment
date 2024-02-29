@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View  , TextInput ,  Pressable    , StatusBar  , ImageBackground ,  Dimensions, AppRegistry  , FlatList , Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View  , TextInput ,  Pressable    , StatusBar  , ImageBackground ,  Dimensions, AppRegistry  , TouchableOpacity , Image, ScrollView } from 'react-native';
 
 
 import * as React from 'react';
@@ -9,7 +9,8 @@ import textBackPic from "../Images/textBackPic.jpg"  ;
 import app_backgrounds_picture from "../Images/app_backgrounds_picture.jpg"  ;  
 import video2 from "../assets/video2.mp4" ;  
 import { Video, ResizeMode } from 'expo-av';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; 
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';  
 import logo_student from "../Images/logo_student.png" ; 
 import vector from "../Images/vector.png" ;  
 import Checkbox from './Checkbox';
@@ -121,7 +122,7 @@ export default function  Module (   {   route , navigation  }) {
 
 
 
-
+   
 
 
   // all the types and are mentioned 
@@ -203,7 +204,15 @@ text : "quiz"
 
  
 
+  //   submit task  
+  const submitPicture = ()  => { 
+    alert("gjj") ; 
+  }
 
+
+
+
+  
 
  
  
@@ -1189,8 +1198,258 @@ text : "quiz"
          </View> 
      
     ) ;
-      }
-  
+      } 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      else if(   data[currentElement].sub_type  === "upload_picture"    ) {
+    
+
+        return( 
+           <View style={ styles.container}   > 
+                    
+           <ImageBackground  source={  tasktextback } resizeMode="cover"  style={styles.image} >  
+         
+                  
+     <View  style={ styles.sidebar}   >
+          
+       
+     <View  style= {{ height : "17%"  , width : '100%'  , display : "flex"  , alignItems: "center"  , justifyContent : "flex-end"   }}>
+                      
+                     
+                      <Image  resizeMode='contain'  style = {{ height : "80%"  , width : "80%"}}  source={ logo_student } /> 
+                    
+    
+                    </View>   
+                     
+    
+    
+    
+                    <View  style= {{ height : "65%"  , width : "100%"  , display : "flex"   ,  justifyContent : "center" }}>
+        
+      
+                    <View  style= {{ height : "60%"  , width : "100%" ,  display : "flex"  , justifyContent : "space-around"  , alignItems : "center"}} >  
+    
+    
+    
+      
+                    <Pressable  style= {{ height : "15%"  , width : "40%" }}  onPress= {() => {   navigation.navigate( "Home"   ,  { userData : route.params.userData }  ) }}  >
+                          <MaterialCommunityIcons name="grid"  size={30}  color={ "#B6B7D0"} />
+                          </Pressable> 
+    
+    
+                          <Pressable  style= {{ height : "15%"  , width : "40%"}}    onPress= {() => {   navigation.navigate( "Bplan"     ,  { userData : route.params.userData }   ) }}  >
+                          <MaterialCommunityIcons name="receipt"  size={30}  color={ "#B6B7D0"} />
+                              </Pressable> 
+    
+    
+    
+    
+                              <Pressable  style= {{ height : "15%"  , width : "40%" }} >
+                                
+                              <MaterialCommunityIcons name="certificate"  size={30}  color={ "#B6B7D0"} />
+                              </Pressable> 
+    
+    
+                    </View>
+    
+                      
+                    </View>
+                      
+                    <View  style= {{ height : "18%"  , width : "100%"  , display : "flex"  , alignItems : "center" , justifyContent : "center"}}>
+                
+                   
+                   <Pressable  style= { [  styles.alignment ,  { height : "30%"  , width : "50%"}] }    onPress= {() => {   navigation.navigate( "LogIn") }}   >
+    
+                   <MaterialCommunityIcons name="logout"  size={30}  color={ "#F06B6D"} /> 
+    
+                   </Pressable>
+                   <View>
+    
+                   </View>
+                      
+                    </View>
+    
+    
+    
+          </View> 
+          
+         
+         
+         
+          <View style={ styles.body} >  
+          
+       
+     
+     
+     
+              <View    style={ styles.view1} >     
+               
+     
+              <View   style={ [  styles.box_alignment , {  height : "60%"  , width : '20%' , backgroundColor : "#5E82F4" ,  borderTopRightRadius :25  , borderBottomRightRadius : 25  } ] } >
+     
+     <Text style = { { color : "#FFF"  , fontWeight : "700" , fontSize : 20} }>{ route.params.name }</Text>
+      </View>
+         
+     
+     
+    
+      <View  style= {{  height : "60%"  , width : '25%'  ,  display : "flex"  , justifyContent : 'center'  ,   alignItems :"center"  ,   flexDirection  : "row"   , backgroundColor :"#D9D9D9"  , borderTopLeftRadius : 25 , borderBottomLeftRadius :  25  , overflow :"hidden" }}>  
+                          
+                          
+                            
+                          <Image  resizeMode='contain'  style = {{ height : "80%"  , width : "25%"}}  source={ vector  } /> 
+                                            
+                                               
+                   
+                                       <View style={{    height : "80%"  , width : '75%'    ,   display : "flex"   , alignItems : "flex-start"  , justifyContent : "center"  , paddingLeft : 2  }}>
+                                                     
+                                 <Text style={{   fontSize : 17  , color : "#353B55"  , fontWeight : "700"  , fontStyle : "normal"}}>{ route.params.userData.student_name  }</Text> 
+                   
+                                 <Text style={{ fontSize : 10  , color : "#5A6198"  , fontWeight : "600"  , fontStyle : "normal"  }} >{ route.params.userData.school_name  } </Text>
+                                                 </View>
+                                     </View>
+     
+              </View> 
+         
+          
+              <View    style={ [styles.view2    ] } >      
+         
+             
+                 <View  style={{ height : "20%"  , width : "75%"   , borderRadius : 20  , display : "flex",   flexDirection :"row", paddingTop : 5 }} > 
+                  
+    
+                 <Text style = { [styles.text1  , { fontSize : 16  , fontWeight : "700"  } ]}> Instructions.</Text>  
+    
+                 <ScrollView style = {{ width : "85%" , height : "100%"}}>
+                 <Text style = {[styles.text1  , { fontSize : 14  , fontWeight : "400"  ,  width :  "100%"  , height : "100%" } ]}  >{data[currentElement].enter_text}</Text>  
+                 </ScrollView>
+                 </View>
+                 
+    
+                <TouchableOpacity  style={{ height : "60%"  , width : "75%"   , backgroundColor : '#B7B7D1'  , borderRadius : 20  , display : "flex"  , alignItems : "center"  , justifyContent : "center"}} 
+                 onPress={ submitPicture}
+                >  
+                   
+                <FontAwesomeIcon  name="upload"  size={30}    /> 
+                   <Text style = {{   fontSize : 17  , fontWeight : "500"  , fontStyle : "normal"}}> Upload Picture</Text>  
+                 </TouchableOpacity>
+                   
+    
+                
+                 <View  style={{ height : "20%"  , width : "75%"    , display : "flex"  , alignItems : "flex-end"  , justifyContent : "center"}} > 
+                  
+                  <Pressable  style={{ height : "50%"  , width : "20%"   , backgroundColor : '#FCC046'  , borderRadius : 20  , display : "flex"  , justifyContent : 'center'  , alignItems : 'center'}} >
+                     <Text>Submit</Text>
+                  </Pressable>
+                 </View>
+    
+    
+         
+              </View> 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+         
+            
+         
+         
+              <View    style={ styles.view3} >  
+                
+              <View  style={  styles.view3_inner_view  }  >
+         
+              <Pressable    disabled={ ( currentElement >= 1) ? false : true }  onPress={ () => {   handlePrevButton( ) }}   style={ styles.btn }   >
+         <MaterialCommunityIcons name="chevron-left"  size={45}   color= { ( currentElement >= 1 )? "#000" : "#808080"} />
+         </Pressable> 
+    
+    
+         <Pressable   disabled={ ( currentElement <= data.length - 2 ) ? false : true }   onPress={ () => {   handleNextButton( ) }}   style={ styles.btn }   >
+         <MaterialCommunityIcons name="chevron-right"  size={45}   color= { (  currentElement <= data.length - 2 )? "#000" : "#808080"}  />
+         </Pressable>
+         
+              
+              </View >
+             
+         
+              </View>
+         
+           </View>  
+    
+    
+             </ImageBackground>
+             
+             </View> 
+         
+        ) ;
+          }
+      
 
 
 
