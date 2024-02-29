@@ -15,6 +15,7 @@ import logo_student from "../Images/logo_student.png" ;
 import vector from "../Images/vector.png" ;  
 import Checkbox from './Checkbox';
 import  "../app.json" ; 
+import * as DocumentPicker from 'expo-document-picker';
 
 
 
@@ -204,9 +205,31 @@ text : "quiz"
 
  
 
-  //   submit task  
-  const submitPicture = ()  => { 
-    alert("gjj") ; 
+  //   submit picture  
+  const submitPicture = async ()  => { 
+   // alert("gjj") ;  
+
+
+    try { 
+
+      const result = await DocumentPicker.getDocumentAsync({
+        type: 'image/*',
+        
+      })
+      if (result.type === 'cancel') { 
+      
+        alert('File not selected!');
+        return;
+      } 
+      
+      alert( "File Uploaded!" ) ; 
+      console.log('Document picked:', result);
+
+    } catch(err) {
+          
+      alert( "Please try again!") ; 
+      console.log("Error picking document: ", err);
+    }  
   }
 
 
