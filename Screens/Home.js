@@ -216,7 +216,8 @@ export default function  Home (   {   route , navigation  }) {
    
   ) ; 
    
-
+  console.log( "hu")  ;
+  console.log( data) ; 
 
  
     
@@ -418,7 +419,6 @@ async function saveFile(uri, filename, mimetype) {
 
    React.useEffect(() => {
 
-    // console.log( "bbhja")  ;
     
     getData();  
 
@@ -496,7 +496,7 @@ async function saveFile(uri, filename, mimetype) {
           <Text  style =  { styles.text2 }  > { el.subject_name } </Text> 
           </View> 
              
-          <TouchableOpacity  style =  { { height : "70%"  , width : '25%'   }}    onPress= {() => {   navigation.navigate( "Module" , {   currentElement  : 0   , screenProp : true   ,   userData : route.params.userData   ,  data : el       }      ) }} > 
+          <TouchableOpacity  style =  { { height : "70%"  , width : '25%'   }}    onPress= {() => {   navigation.navigate( "Module" , {   currentElement  : 0   , screenProp : true   ,   userData : route.params.userData   ,  data : el    ,  moduleNumber : `${index}`    }      ) }} > 
           <MaterialCommunityIcons name="page-next-outline"  size={30}  color={ "#5E82F4"} /> 
 
           </TouchableOpacity>  

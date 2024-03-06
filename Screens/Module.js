@@ -20,6 +20,7 @@ import * as DocumentPicker from 'expo-document-picker';
 
 
 
+
 const windowHeight = Dimensions.get('window').height; 
 
 
@@ -30,22 +31,23 @@ export default function  Module (   {   route , navigation  }) {
  
   const [  currentOrigin  , setCurrentOrigin ] = React.useState( null ) ; 
   const [  currentElement  , setCurrentElement  ] = React.useState( 0 ) ;  
-  const [  Answer  , setAnswer  ] = React.useState(  [] ) ;  
+  const [  textAnswer  , setTextAnswer  ] = React.useState( null ) ;  
   const [  isChecked , setIsChecked  ] = React.useState( [] ) ;   // for handling quiz   
+  const [  imageUploadUrl   , setImageUploadUrl ] = React.useState( null ) ; 
+  const video = React.useRef(null);  
+  const [ data  , setData ] = React.useState( [ { type : "none"} ] ) ; 
+  const [ status  , setStatus] = React.useState( {} ) ; 
 
-  
 
 
-
-/* 
   console.log( "module") ; 
   console.log( currentElement) ;
-  console.log( route.params.screenProp ) ;  
-  console.log(  route.params.data ) ;  
-  console.log(  route.params.userData ) ;  */
+ // console.log( route.params.screenProp ) ;  
+  console.log(  route.params.data.module_name) ;  
+ // console.log(  route.params.userData ) ;  
+  console.log(  route.params.moduleNumber ) ;
+  console.log( data[currentElement] ) ;
 
-
-  const [ data  , setData ] = React.useState( [ { type : "none"} ] ) ; 
 
     
 
@@ -100,116 +102,86 @@ export default function  Module (   {   route , navigation  }) {
 
 
 
-
+  const  getAns = async (  ) => {  
+       
+    console.log( "getans") ; 
+  }
 
 
 
   
   React.useEffect(() => { 
-
-   // console.log( "useeffect") ; 
-   /*  setCurrentOrigin( route.params.currentElement ); */
+    
+    console.log("useeffect") ; 
     setCurrentElement(  route.params.currentElement );   
-    
-    
-   
-
     getData();  
+    getAns();
+    
+
+
+  }  , [   route.params.screenProp  ,  route.params.currentElement ]) ; 
 
 
 
-  }  , [   route.params.screenProp  ]) ; 
+  
 
-
-
+  // get image url and save for submit
+  const getUrl = async (  result)  => { 
 
    
-
-
-  // all the types and are mentioned 
-
- /*  {
-
-    type : "text"  , 
-    text : "quiz"
-
-}  ,    
-
-
-  {
-
-
-
-    type : "picture"  , 
-    text : "picture"
-  
-  }  , 
-  {
-
-    type : "task_text"  , 
-    text : "task_text"
-  
-  
-     }  , 
-
-  {
-
-    type : "text"  , 
-    text : "yuyu jyt6uty gf67yr  gyutyu  gyg  gjygugu hjgg"
-
-}    ,  
-
-  {
-
-    type : "video"  , 
-    text : "video "
-
-}  ,   
-{
-
-  type : "quiz"  , 
-  text : "quiz"
-
-}  
-,    
-
-{
-
-type : "picture_upload"  , 
-text : "picture_upload"
-
-}  ,   
-
-
-{
-
-
-
-type : "calculation"  , 
-text : "calculation"
-
-}  , 
-
-
-
-{
-
-type : "quiz"  , 
-text : "quiz"
-
-}  
- */ 
-
-
+   console.log( "geturl") ;  
+   console.log( result ) ;    
  
 
+   
+   const   submit_img =  async ( result) => {   
+         
+    const data = new FormData();
+    data.append('file', {name  : result.name , 
+       type : result.mimeType , 
+       uri : result.uri
+    });
+
+
+
+    try {
+      const response = await fetch( "http://3.123.37.47:5000/admin/upload_file_c" , 
+
+      {   method: 'POST',
+          headers: {
+            'Content-type': "multipart/form-data"  ,
+        }
+    , 
+        body:   data
+}
+     );
+      const json = await response.json();
+        
+
+          console.log(   json) ;   
+
+         if(  json.status === "success"){ 
+
+          alert( "Upload Successful") ; 
+              setImageUploadUrl(  json.file_url)  ; 
+         }else{
+          alert( "Please try again!") ; 
+         }
+    } catch (error) {
+      console.log(error);
+    } 
+
  
+};
+   submit_img( result)  ;  
+
+  }
 
   //   submit picture  
   const submitPicture = async ()  => { 
    // alert("gjj") ;  
 
-
+   
     try { 
 
       const result = await DocumentPicker.getDocumentAsync({
@@ -222,32 +194,169 @@ text : "quiz"
         return;
       } 
       
-      alert( "File Uploaded!" ) ; 
-      console.log('Document picked:', result);
+      
+      console.log('Document picked:', result); 
+      getUrl( result ) ; 
 
     } catch(err) {
           
       alert( "Please try again!") ; 
       console.log("Error picking document: ", err);
     }  
-  }
+  }  
+
+
+ 
+
+   //  upload the ans 
+ const  submitPictureToDb = async ()  => { 
+ 
+ 
+  console.log( route.params.userData._id  ) ; 
+  console.log( route.params.moduleNumber ) ; 
+  console.log( route.params.data.module_name ) ; 
+  console.log( currentElement) ; 
+  console.log(imageUploadUrl ) ; 
+
+
+  const   submit_to_db =  async () => {    
+     
+    if( imageUploadUrl !== null){
+
+    
+    try {
+      const response = await fetch( "http://3.123.37.47:5000/admin/motu" , 
+      {   method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'  ,
+        }
+    , 
+    body: JSON.stringify({
+       
+      "student_id" : route.params.userData._id  ,
+      "module_no":   route.params.moduleNumber , 
+      "module_name":  route.params.data.module_name ,  
+      "index_no" : `${currentElement}`  ,
+       "details" : imageUploadUrl
+ 
+  }),
+}
+     );
+      const json = await response.json();
+        
+
+          console.log(   json) ;   
+
+       
+          
+    if(  json.status === "success"   ){ 
+          
+      alert(  json.message ) ; 
+      setImageUploadUrl( null) ;
+
+
+      }else{
+         
+        alert( json.message) ;
+
+      }  
+      
+      
+    } catch (error) {
+      console.error(error);
+    } 
+
+ 
+} else{ 
+
+  alert( "Please try again!") ; 
+}
+  };
+   submit_to_db()  ; 
 
 
 
+
+ }
 
   
 
+
+
+
+
+ const submitTextToDb = async ()  => { 
  
  
+  console.log( route.params.userData._id  ) ; 
+  console.log( route.params.moduleNumber ) ; 
+  console.log( route.params.data.module_name ) ; 
+  console.log( currentElement) ; 
+  console.log( textAnswer ) ; 
+
+
+  const   submit_to_db =  async () => {    
+     
+    if(   textAnswer !== null ){
+
+    
+    try {
+      const response = await fetch( "http://3.123.37.47:5000/admin/motu" , 
+      {   method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'  ,
+        }
+    , 
+    body: JSON.stringify({
+       
+      "student_id" : route.params.userData._id  ,
+      "module_no":    route.params.moduleNumber , 
+      "module_name":  route.params.data.module_name ,  
+      "index_no" : `${currentElement}`   , 
+       "details" :  textAnswer
+ 
+  }),
+}
+     );
+      const json = await response.json();
+        
+
+          console.log(   json) ;   
+
+       
+          
+    if(  json.status === "success"   ){ 
+          
+     alert(  json.message ) ; 
+    //   setTextAnswer( null) ; 
+
+      }else{
+         
+        alert( json.message) ;
+
+      }  
+      
+      
+    } catch (error) {
+      console.error(error);
+    } 
+
+ 
+} else{ 
+
+  alert( "Please type answer!") ; 
+}
+  };
+   submit_to_db()  ; 
 
 
 
-  const video = React.useRef(null);  
-  const [status, setStatus] = React.useState({}); 
 
+ }
 
-
-
+  
 
 
 
@@ -273,9 +382,12 @@ text : "quiz"
 
       if(  data[ currentElement - 1 ].sub_type === "quiz"     ) {
            
-        navigation.navigate( "Quiz"     ,  {   currentElement : currentElement - 1   ,    totalLength  :  data.length     , data : data   , screenProp : route.params.screenProp   , userData :  route.params.userData   }   )  ;   
+        navigation.navigate( "Quiz"     ,  {   currentElement : currentElement - 1   ,    totalLength  :  data.length     , data : data   , screenProp : route.params.screenProp   , userData :  route.params.userData   ,   moduleNumber :  route.params.moduleNumber   , moduledetails :  route.params.data  }   )  ;   
 
-      }  
+      }  else{
+
+        navigation.navigate( "Module" , {   currentElement  : currentElement - 1   , screenProp : true   ,   userData : route.params.userData   ,  data : route.params.data     ,  moduleNumber :  route.params.moduleNumber   }      )
+      }
 
   }
   
@@ -293,9 +405,12 @@ text : "quiz"
 
 
            
-        navigation.navigate( "Quiz"     ,  {   currentElement : currentElement +1   ,    totalLength  :  data.length     , data : data   , screenProp : route.params.screenProp  ,   userData :  route.params.userData  }   )  ;  
+        navigation.navigate( "Quiz"     ,  {   currentElement : currentElement +1   ,    totalLength  :  data.length     , data : data   , screenProp : route.params.screenProp  ,   userData :  route.params.userData  ,  moduleNumber :  route.params.moduleNumber   ,  moduledetails :  route.params.data }   )  ;  
 
-      } 
+      } else{
+
+        navigation.navigate( "Module" , {   currentElement  : currentElement+1   , screenProp : true   ,   userData : route.params.userData   ,  data : route.params.data     ,  moduleNumber :  route.params.moduleNumber   }      )
+      }
   }
   
 
@@ -1164,18 +1279,21 @@ text : "quiz"
              
 
             <View  style={{ height : "60%"  , width : "75%"   , backgroundColor : '#FFF'  , borderRadius : 20}} > 
-             <TextInput   placeholder='Type here...' 
-              /* onChangeText = {  setAnswer }  value = { Answer  }  */ 
-             style={  { padding : 10}}     />
+             <TextInput  
+              placeholder='Type here...' 
+             onChangeText = {  setTextAnswer }   
+             style={  { padding : 10  ,  height : "100%"  , width : "100%"  , textAlignVertical : "top"  ,  borderRadius : 20 }}  
+             multiline   />
              </View>
                
 
             
              <View  style={{ height : "20%"  , width : "75%"    , display : "flex"  , alignItems : "flex-end"  , justifyContent : "center"}} > 
               
-              <Pressable  style={{ height : "50%"  , width : "20%"   , backgroundColor : '#FCC046'  , borderRadius : 20  , display : "flex"  , justifyContent : 'center'  , alignItems : 'center'}} >
+              <TouchableOpacity  style={[{ height : "50%"  , width : "20%"   , backgroundColor : '#C8C8C8'  , borderRadius : 20  , display : "flex"  , justifyContent : 'center'  , alignItems : 'center'} , { backgroundColor : '#C8C8C8'  } ] }
+                 disabled= { false}  onPress={ submitTextToDb}      >
                  <Text>Submit</Text>
-              </Pressable>
+              </TouchableOpacity>
              </View>
 
 
@@ -1412,7 +1530,7 @@ text : "quiz"
                  
     
                 <TouchableOpacity  style={{ height : "60%"  , width : "75%"   , backgroundColor : '#B7B7D1'  , borderRadius : 20  , display : "flex"  , alignItems : "center"  , justifyContent : "center"}} 
-                 onPress={ submitPicture}
+                    onPress={ submitPicture}
                 >  
                    
                 <FontAwesomeIcon  name="upload"  size={30}    /> 
@@ -1423,7 +1541,9 @@ text : "quiz"
                 
                  <View  style={{ height : "20%"  , width : "75%"    , display : "flex"  , alignItems : "flex-end"  , justifyContent : "center"}} > 
                   
-                  <Pressable  style={{ height : "50%"  , width : "20%"   , backgroundColor : '#FCC046'  , borderRadius : 20  , display : "flex"  , justifyContent : 'center'  , alignItems : 'center'}} >
+                  <Pressable  style={{ height : "50%"  , width : "20%"   , backgroundColor : '#FCC046'  , borderRadius : 20  , display : "flex"  , justifyContent : 'center'  , alignItems : 'center'}}
+                    onPress={ submitPictureToDb}
+                  >
                      <Text>Submit</Text>
                   </Pressable>
                  </View>

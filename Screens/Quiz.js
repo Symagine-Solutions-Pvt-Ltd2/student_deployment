@@ -34,10 +34,14 @@ export default function  Quiz  (   {   route , navigation  }) {
    
   console.log( "quiz") ; 
     console.log(  route.params.currentElement) ; 
- /* console.log( route.params.totalLength  ) ; 
+    console.log( route.params.totalLength  ) ; 
   console.log(   route.params.userData ) ;  
-  console.log(   route.params.screenProp ) ; */
-  console.log(   route.params.data[ route.params.currentElement].quiz_data.length ) ; 
+  console.log(   route.params.screenProp ) ;
+  console.log(  route.params.data[ route.params.currentElement] ) ;   
+  console.log(  route.params.moduleNumber ) ; 
+  console.log( route.params.moduledetails ) ;
+
+ // console.log(   route.params.data[ route.params.currentElement].quiz_data.length ) ; 
   
 
 
@@ -52,13 +56,13 @@ export default function  Quiz  (   {   route , navigation  }) {
      
       if(   route.params.data[ route.params.currentElement - 1].sub_type === "quiz"){
        
-        navigation.navigate( "Quiz"     ,  {   currentElement : route.params.currentElement - 1   , screenProp : ( route.params.screenProp === true ) ? false : true   ,   totalLength  :  route.params.totalLength     ,  data : route.params.data   , screenProp : route.params.screenProp   , userData :  route.params.userData   }   )  ; 
+        navigation.navigate( "Quiz"     ,  {   currentElement : route.params.currentElement - 1   , screenProp : ( route.params.screenProp === true ) ? false : true   ,   totalLength  :  route.params.totalLength     ,  data : route.params.data   , screenProp : route.params.screenProp   , userData :  route.params.userData   ,  moduleNumber :  route.params.moduleNumber   ,   moduledetails :  route.params.moduledetails      }   )  ; 
   
       }else{
 
 
 
-      navigation.navigate( "Module"   , { data :    route.params.data   ,   screenProp : ( route.params.screenProp === true ) ? false : true   , currentElement :  route.params.currentElement -1  ,  userData  : route.params.userData  }  ) ;
+      navigation.navigate( "Module"   , {       screenProp : ( route.params.screenProp === true ) ? false : true   , currentElement :  route.params.currentElement -1  ,  userData  : route.params.userData  , moduleNumber :  route.params.moduleNumber   ,   data :  route.params.moduledetails    }  ) ;
 
 
       }
@@ -71,12 +75,12 @@ export default function  Quiz  (   {   route , navigation  }) {
 
     if(   route.params.data[ route.params.currentElement + 1].sub_type === "quiz"){
        
-      navigation.navigate( "Quiz"     ,  {   currentElement : route.params.currentElement + 1   , screenProp : ( route.params.screenProp === true ) ? false : true   ,   totalLength  :  route.params.totalLength     ,  data : route.params.data   , screenProp : route.params.screenProp   , userData :  route.params.userData   }   )  ; 
+      navigation.navigate( "Quiz"     ,  {   currentElement : route.params.currentElement + 1   , screenProp : ( route.params.screenProp === true ) ? false : true   ,   totalLength  :  route.params.totalLength     ,  data : route.params.data   , screenProp : route.params.screenProp   , userData :  route.params.userData  , moduleNumber :  route.params.moduleNumber   ,   moduledetails :  route.params.moduledetails    }   )  ; 
 
     }else{
 
     
-      navigation.navigate( "Module"   , { data :    route.params.data   ,   screenProp : ( route.params.screenProp === true ) ? false : true   , currentElement :  route.params.currentElement + 1  ,   userData  : route.params.userData }  ) ; 
+      navigation.navigate( "Module"   , {      screenProp : ( route.params.screenProp === true ) ? false : true   , currentElement :  route.params.currentElement + 1  ,   userData  : route.params.userData  ,  moduleNumber :  route.params.moduleNumber   ,   data :  route.params.moduledetails }  ) ; 
     }
   }
   
@@ -91,8 +95,6 @@ export default function  Quiz  (   {   route , navigation  }) {
 
 
 
-
-//  console.log( quizarr ) ; 
 
 
  
@@ -283,15 +285,18 @@ export default function  Quiz  (   {   route , navigation  }) {
       
 
     const   submitQuizScore  =  async ( score  ) => {   
-      
+        
+      console.log( route.params.userData._id  ) ; 
+      console.log( route.params.moduleNumber ) ; 
+      console.log(route.params.moduledetails.module_name ) ; 
+      console.log( `${route.params.currentElement}` ) ; 
+      console.log( score) ; 
+         
 
-    //  console.log ("innnn" )  ;   
-    //  console.log ( score )  ;   
-    //  console.log (   route.params.userData._id )  ;    
-     
 
-       try {
-        const response = await fetch( "http://3.123.37.47:5000/admin/quiz_score" , 
+        
+      try {
+        const response = await fetch( "http://3.123.37.47:5000/admin/motu" , 
         {   method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -300,8 +305,11 @@ export default function  Quiz  (   {   route , navigation  }) {
       , 
       body: JSON.stringify({
          
-        _id  :  route.params.userData._id ,
-        quiz_score : score  
+        "student_id" : route.params.userData._id  ,
+        "module_no":    route.params.moduleNumber , 
+        "module_name":  route.params.moduledetails.module_name ,  
+        "index_no" : `${route.params.currentElement}`   , 
+         "details" : `${score}`
    
     }),
   }
@@ -310,26 +318,28 @@ export default function  Quiz  (   {   route , navigation  }) {
           
   
             console.log(   json) ;   
-
+  
          
             
-       if(  json.status === "success"){ 
+      if(  json.status === "success"   ){ 
             
-        alert( json.message) ; 
-        navigation.navigate( "Answer"  ,  {  score :  score  ,  data :  DATA_quiz  ,    userData  :  route.params.userData}) ; 
-
+       alert(  json.message ) ; 
+      //   setTextAnswer( null) ; 
   
         }else{
-         
-           console.log( json.message) ; 
+           
+          alert( json.message) ;
   
         }  
         
         
       } catch (error) {
         console.error(error);
-      }  
+      } 
 
+     
+
+      
    
  };
 
@@ -362,12 +372,12 @@ export default function  Quiz  (   {   route , navigation  }) {
                score++ ;  
            //    console.log( "1") ;
 
-         } else if(  DATA_quiz[i].final2.option2 === quizarr[i]  &&  DATA_quiz[i].final2.answer1 === "true"  ){
+         } else if(  DATA_quiz[i].final2.option2 === quizarr[i]  &&  DATA_quiz[i].final2.answer2 === "true"  ){
   
           score++ ; 
        //   console.log( "2") ;
 
-        }else if( DATA_quiz[i].final3.option3 === quizarr[i]  &&  DATA_quiz[i].final3.answer1 === "true"  ){
+        }else if( DATA_quiz[i].final3.option3 === quizarr[i]  &&  DATA_quiz[i].final3.answer3 === "true"  ){
 
           score++ ; 
        //   console.log( "3") ;
@@ -375,9 +385,9 @@ export default function  Quiz  (   {   route , navigation  }) {
            }
 
       }  
-
+      console.log( "score" ) ;   
       
-       console.log( score / n ) ;   
+       console.log( score ) ;   
       
       let finalScore   =  (score*100)/n  ;   
        

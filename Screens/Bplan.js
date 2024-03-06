@@ -8,7 +8,7 @@ import vector from "../Images/vector.png" ;
 import  file_upload from "../Images/file_upload.jpg" ;
 import hhh from "../Images/hhh.png"  ; 
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'; 
-
+import * as DocumentPicker from 'expo-document-picker';
 
 
 const windowWidth = Dimensions.get('window').width;
