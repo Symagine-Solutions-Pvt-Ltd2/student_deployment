@@ -331,7 +331,7 @@ async function saveFile(uri, filename, mimetype) {
 
 
     try {
-      const response = await fetch( "http://3.123.37.47:5000/admin/a_module" ,  
+      const response = await fetch( "https://learn-up.app/admin/a_module" ,  
 
       {   method: 'POST',
           headers: {
@@ -376,7 +376,7 @@ async function saveFile(uri, filename, mimetype) {
    const getData = async () => {  
 
     try {
-      const response = await fetch( "http://3.123.37.47:5000/admin/d_program" , 
+      const response = await fetch( "https://learn-up.app/admin/d_program" , 
       {   method: 'POST',
           headers: {
             'Accept': 'application/json',

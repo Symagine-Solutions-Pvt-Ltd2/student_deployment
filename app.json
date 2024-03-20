@@ -33,6 +33,7 @@
       "eas": {
         "projectId": "15fa586e-d4e0-4700-884a-ffdf127fae6e"
       }
-    }
+    } ,
+    "plugins": ["expo-document-picker"]
   }
 }

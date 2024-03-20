@@ -27,7 +27,7 @@ export default function  LogIn  (  {   route , navigation  }) {
 
      try {
     //  const response = await fetch( 'http://10.0.2.2:8000/student/login'  ,   
-    const response = await fetch( "http://3.123.37.47:5000/student/login"    , 
+    const response = await fetch( "https://learn-up.app/student/login"    , 
 
     {  method: 'POST', 
 
@@ -50,7 +50,7 @@ body: JSON.stringify({
  const json = await response.json(); 
 
 
-   //console.log(json);     
+   console.log(json);     
    
     if(  json.status === "success"){ 
 

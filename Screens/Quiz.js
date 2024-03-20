@@ -1,13 +1,12 @@
 import { StyleSheet, Text, View  , TextInput , FlatList  ,  TouchableOpacity    , StatusBar  , ImageBackground , Dimensions   , Image, Pressable   } from 'react-native';
 
-import React  , { useState }   from "react";
+import React  , { useState  , useEffect }   from "react";
 import pic3 from "../Images/pic3.jpg" ;  
 import app_backgrounds_quiz from "../Images/app_backgrounds_quiz.jpg"  ;  
 import logo_student from "../Images/logo_student.png" ;
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; 
 import vector from "../Images/vector.png" ; 
 import Checkbox from './Checkbox';
-import Module from './Module';
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -27,22 +26,99 @@ export default function  Quiz  (   {   route , navigation  }) {
 
   const[ quizarr , setQuizArr ] = useState( arr) ;  // answers are saved 
   const[ isChecked , setIsChecked ] = useState( arr1) ; 
-  const[ DATA_quiz  , setDATA_quiz ] = useState(  route.params.data[ route.params.currentElement].quiz_data ) ; 
+  const[ DATA_quiz  , setDATA_quiz ] = useState(  route.params.data[ route.params.currentElement].quiz_data ) ;  
+  const [ submitButtonStatus  , setSubmitButtonStatus ] = React.useState( "" ) ; 
    
       
 
    
   console.log( "quiz") ; 
-    console.log(  route.params.currentElement) ; 
-    console.log( route.params.totalLength  ) ; 
+  console.log(  route.params.currentElement) ; 
+  console.log( route.params.totalLength  ) ; 
   console.log(   route.params.userData ) ;  
   console.log(   route.params.screenProp ) ;
   console.log(  route.params.data[ route.params.currentElement] ) ;   
   console.log(  route.params.moduleNumber ) ; 
   console.log( route.params.moduledetails ) ;
-
  // console.log(   route.params.data[ route.params.currentElement].quiz_data.length ) ; 
   
+
+
+
+  // to get and check  quiz already submitted or not 
+   const  getAns = async (  ) => {  
+       
+    console.log( "getans") ;    
+
+   
+    console.log(  route.params.userData._id ) ;    
+
+
+    try {
+      const response = await fetch( "https://learn-up.app/admin/student_details" ,  
+
+      {   method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'  ,
+        }
+    , 
+    body: JSON.stringify({
+       
+     "_id" :   route.params.userData._id  
+ 
+  }),
+}
+     );
+      const json = await response.json();
+
+      
+    // console.log( json.data.student_module_details[ route.params.moduleNumber]) ; 
+     const newInfo  = json.data.student_module_details[ route.params.moduleNumber] ; 
+  
+
+     const newAnsArr  = newInfo[  route.params.moduledetails.module_name] ; 
+
+     console.log( "hi") ; 
+     console.log( newAnsArr[   route.params.currentElement]) ; 
+
+
+     if(  newAnsArr[ route.params.currentElement ]  === "" ){
+       
+       setSubmitButtonStatus("yes") ; 
+
+     }else{
+       setSubmitButtonStatus("") ; 
+     }
+
+    } catch (error) {
+      console.error(error);
+    }   
+
+
+
+  }
+
+
+
+ React.useEffect(() => { 
+    
+  console.log("useeffect") ; 
+ // setCurrentElement(  route.params.currentElement );   
+  //getData();  
+  getAns();
+  
+
+
+}  , [   route.params.screenProp  ,  route.params.currentElement ]) ; 
+
+  
+   
+
+
+
+
+
 
 
 
@@ -91,159 +167,6 @@ export default function  Quiz  (   {   route , navigation  }) {
     const myItemSeparator = () => {
       return <View style={{ height: 5  }} />;   // separator for flatlist 
       };
-
-
-
-
-
-
- 
-   
-     /*  const DATA_quiz = [
-        {
-          id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', 
-    
-           question : 'What is the main purpose of identifying "Substitutable Products & Services" in the market?',   
-          
-
-
-           final1 : { 
-
-            option1 : "Replacing a business partner" , 
-             answer1 : "false"
-           }
-         ,
-          
-          final2 : { 
-          option2 : "Finding alternative suppliers"  , 
-          answer2 : "false"
-        }
-        , 
-            
-        final3 : { 
-          option3 : "Offering a better-quality product or service" , 
-          answer3 : "true"
-        }
-    
-          
-        }, 
-
-        { 
-          
-          
-          id: 'bd7acbea-c1b1-46c2-aed5-3jiljad53abb28ba', 
-    
-          question : 'What are "Exportable Products or Services" ?',   
-     
-
-          final1 : { 
-        option1 : "Innovative ideas" , 
-        answer1 : "false"
-      }  , 
-
-
-        final2 : { 
-        option2 : "Products or services that can be replaced by better alternatives" , 
-        answer2 : "false"
-      }  , 
-
-
-        final3 : { 
-        option3 : "Products or services that stand out positively and have potential in other markets" , 
-        answer3 : "true"
-      } 
-
-
-
-        }, 
-
- 
-
-        { 
-          
-          id: 'bd7acbejkhkja-c1b1-46c2-aed5-3ad53abb28ba', 
-    
-          question : 'What is the main purpose of identifying "Innovations or Unique Offerings" according to the text?',   
-      
-
-          final1 : { 
-        option1 : "To find products that are cheaper" , 
-        answer1 : "false"
-      } ,
-        
-
-        final2 : { 
-        option2 : "To identify gaps in the market" , 
-        answer2 : "true"
-      }
-    
- , 
-
-        final3 : { 
-        option3 : "To explore potential export opportunities" ,  
-        answer3: "false"
-      }
-
-        }, 
-
-
-        { 
-          
-          
-          id: 'bd7acbea-c1b1-46c2-aed5878-3jiljad53abb28ba', 
-    
-          question : 'Which category is the most challenging to come up with ideas, but has significant potential?',   
-       
-
-          final1 : { 
-        option1 : "Substitutable Products & Services" , 
-         answer1 : "false"
-           } , 
-
-
-        final2 : { 
-        option2 : "Innovations or Unique Offerings" , 
-        answer2: "true"
-      }  ,
-
-
-        final3 : { 
-        option3 : "Exportable Products or Services" , 
-        answer3 : "false"
-      } 
-
-
-        }, 
-
-        { 
-          
-          
-          id: 'bd7acbea-c1b1-46c2-aed578-3jiljad53abb28ba', 
-    
-          question : 'What can be done during the "Market visit" step of "The Compass" method?'  ,
-        
-
-          final1 : { 
-        option1 : "Visiting the market and documenting all observations" , 
-        answer1 : "true"
-      } , 
-
-
-        final2 : {  
-
-        option2 : "Selecting the best ideas for the business" , 
-        answer2 : "false"
-      } , 
-
-        final3: { 
-        option3 : "Exporting products to other markets" , 
-        answer3 : "false"
-      } 
-
-        }, 
-        
-      ]; 
-     */ 
 
 
 
@@ -296,7 +219,7 @@ export default function  Quiz  (   {   route , navigation  }) {
 
         
       try {
-        const response = await fetch( "http://3.123.37.47:5000/admin/motu" , 
+        const response = await fetch( "https://learn-up.app/admin/motu" , 
         {   method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -323,7 +246,9 @@ export default function  Quiz  (   {   route , navigation  }) {
             
       if(  json.status === "success"   ){ 
             
-       alert(  json.message ) ; 
+       alert(  json.message ) ;   
+       navigation.navigate( "Answer"  ,  {  score :  score  ,  data :  DATA_quiz  ,    userData  :  route.params.userData   ,   moduledetails :  route.params.moduledetails  }) ; 
+
       //   setTextAnswer( null) ; 
   
         }else{
@@ -478,7 +403,7 @@ export default function  Quiz  (   {   route , navigation  }) {
             
                <View   style={ [  styles.box_alignment , {  height : "60%"  , width : '18%' , backgroundColor : "#5E82F4" ,  borderTopRightRadius :25  , borderBottomRightRadius : 25  } ] } >
    
-   <Text style = { { color : "#FFF"  , fontWeight : "700" , fontSize : 20} }>{ route.params.name }</Text>
+   <Text style = { { color : "#FFF"  , fontWeight : "700" , fontSize : 20} }>{  route.params.moduledetails.module_name } </Text>
     </View>
        
    
@@ -627,8 +552,8 @@ export default function  Quiz  (   {   route , navigation  }) {
   
              
 
-              <TouchableOpacity   style={ {  width : "20%"  ,  height : "70%"  ,  backgroundColor : "#FCC046"  , borderRadius : 25  , display : "flex"  , alignItems : "center"   , justifyContent : "center"} }  
-                 onPress= {() => {  handleQuizSubmit()}}
+              <TouchableOpacity   style={[ {  width : "20%"  ,  height : "70%"    , borderRadius : 25  , display : "flex"  , alignItems : "center"   , justifyContent : "center"}  ,   ( submitButtonStatus === "yes" )? styles.button_active  : styles.button_inactive  ] }  
+                 disabled= { (submitButtonStatus === "yes" )? false : true}        onPress= {() => {  handleQuizSubmit()}}
               >
                 <Text style = {{ fontWeight : "600"  , fontSize : 16}}  >
                 Submit
@@ -908,7 +833,19 @@ export default function  Quiz  (   {   route , navigation  }) {
       alignItems : "flex-start" , 
       justifyContent : "center" , 
       paddingLeft : 20
-    }
+    }  , 
+    
+    button_active : {
+    
+      backgroundColor : '#FCC046' 
+  
+    }  , 
+     
+    button_inactive : {
+     
+      backgroundColor :  '#C8C8C8'
+    }  , 
+
 
 
   }

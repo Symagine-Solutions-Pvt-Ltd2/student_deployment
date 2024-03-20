@@ -1,8 +1,6 @@
 import { StyleSheet, Text, View  , TextInput ,  TouchableOpacity    , StatusBar  , ImageBackground ,  Dimensions } from 'react-native';
 
 import React, { useEffect , useState } from "react";
-import pic2 from "../Images/pic2.jpg" ;  
-
 import Video from 'react-native-video';
 import video1 from "../Images/video1.mp4" ; 
 

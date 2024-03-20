@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View  , FlatList ,  TouchableOpacity   , Dimensions  , StatusBar  , ImageBackground, Image  , Pressable  } from 'react-native';
+import { StyleSheet, Text, View  , FlatList ,  TouchableOpacity   , Dimensions  ,  ImageBackground, Image  , Pressable  } from 'react-native';
 import React from "react";
 import answerSheetBackground from "../Images/answerSheetBackground.jpg" ;  
 import logo_student from "../Images/logo_student.png" ;
@@ -30,12 +30,54 @@ export default function  Answers  (   {   route , navigation  }) {
   console.log( route.params.data ) ; 
   console.log(  route.params.score) ;   
   console.log(  route.params.userData) ; 
+  console.log(  route.params.moduledetails.module_name ) ; 
+   
 
 
-  
+
+
     const myItemSeparator = () => {
       return <View style={{ height: 5  }} />;   // separator for flatlist 
       };
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -116,7 +158,7 @@ export default function  Answers  (   {   route , navigation  }) {
     
           <View   style={ [  styles.box_alignment , {  height : "60%"  , width : '20%' , backgroundColor : "#5E82F4" ,  borderTopRightRadius :25  , borderBottomRightRadius : 25  } ] } >
    
-   <Text style = { { color : "#FFF"  , fontWeight : "700" , fontSize : 20} }> {  route.params.name }</Text>
+   <Text style = { { color : "#FFF"  , fontWeight : "700" , fontSize : 20} }> {  route.params.moduledetails.module_name } </Text>
     </View>
        
    
@@ -198,7 +240,7 @@ export default function  Answers  (   {   route , navigation  }) {
 
 
                     <TouchableOpacity style={{ width : "7%"   , paddingLeft : 10 ,  display : "flex" , justifyContent : "center"  }} >
-                    <MaterialCommunityIcons name= "circle" size={28}  color = { ( item.final2.answer1 === "false" )?"red"  : "#7BBA85" } />
+                    <MaterialCommunityIcons name= "circle" size={28}  color = { ( item.final2.answer2 === "false" )?"red"  : "#7BBA85" } />
 
                     </TouchableOpacity>  
 
@@ -216,7 +258,7 @@ export default function  Answers  (   {   route , navigation  }) {
                      
                     <TouchableOpacity style={{ width : "7%"   , paddingLeft : 10 ,  display : "flex" , justifyContent : "center"  }}  >
                      
-                    <MaterialCommunityIcons name= "circle" size={28}  color = { ( item.final3.answer1 === "false" )?"red"  : "#7BBA85" } />
+                    <MaterialCommunityIcons name= "circle" size={28}  color = { ( item.final3.answer3 === "false" )?"red"  : "#7BBA85" } />
                     </TouchableOpacity>  
   
 
@@ -263,6 +305,46 @@ export default function  Answers  (   {   route , navigation  }) {
 
 
  
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

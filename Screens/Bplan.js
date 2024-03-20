@@ -1,14 +1,18 @@
-import { StyleSheet, Text, View  , TextInput , FlatList  ,  TouchableOpacity    , StatusBar  , ImageBackground , Dimensions  , Image  , Button   } from 'react-native';
+import { StyleSheet, Text, View  , TextInput , FlatList  ,  TouchableOpacity    , StatusBar  , ImageBackground , Dimensions  , Image  , BackHandler   } from 'react-native';
 
 import React from "react";
 import pic3 from "../Images/pic3.jpg" ;  
 import logo_student from "../Images/logo_student.png" ;
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; 
 import vector from "../Images/vector.png" ;  
-import  file_upload from "../Images/file_upload.jpg" ;
-import hhh from "../Images/hhh.png"  ; 
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'; 
-import * as DocumentPicker from 'expo-document-picker';
+import * as DocumentPicker from 'expo-document-picker'; 
+import * as Print from 'expo-print'; 
+
+
+
+
+
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -25,8 +29,10 @@ export default function  Bplan  (   {   route , navigation  }) {
 
   const [ data  , setData ] = React.useState( [ ] ) ; 
 
-  const [ Answer  , setAnswer  ] = React.useState( [ ] ) ;
-   
+  const [ textAnswer  , setTextAnswer  ] = React.useState( [ ] ) ;
+  
+  const [ imgAnswer  , setImgAnswer  ] = React.useState( [ ] ) ;
+
   const [ fetchedBpName  , setFetchedBpName  ] = React.useState( "" ) ;   
    
   const [ feedback  , setFeedback  ] = React.useState( [] ) ; 
@@ -35,11 +41,14 @@ export default function  Bplan  (   {   route , navigation  }) {
 
 
 
-    
-   //   console.log( route.params.userData)  ; 
+ // console.log( "in bplan " ) ; 
+     /*  console.log( route.params.userData)  ;  */
 
    
-      
+       
+
+
+
   // get all business plan details  
   const  getAllTask = async ( bp_name  ) => {  
      
@@ -51,7 +60,7 @@ export default function  Bplan  (   {   route , navigation  }) {
 
 
     try {
-      const response = await fetch( "http://3.123.37.47:5000/admin/student_details" , 
+      const response = await fetch( "https://learn-up.app/admin/student_details" , 
       {   method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -68,7 +77,7 @@ export default function  Bplan  (   {   route , navigation  }) {
       const json = await response.json();
       
 
-         // console.log(   json) ;    
+          console.log(   json) ;    
 
 
        
@@ -97,7 +106,7 @@ export default function  Bplan  (   {   route , navigation  }) {
 
      
    try {
-      const response = await fetch( "http://3.123.37.47:5000/admin/all_bp" ,  
+      const response = await fetch( "https://learn-up.app/admin/all_bp" ,  
 
       {   method: 'POST',
           headers: {
@@ -122,26 +131,65 @@ export default function  Bplan  (   {   route , navigation  }) {
 
        if(  json.status === "success"  &&  userDetailsIN.bp_name === ""    ){  
               
-    
-           
-              setData( json.data )  ; 
+             console.log( "in bplan1") ;
+             
+              setData( json.data )  ;  
 
 
        }else if(   json.status === "success"    &&   userDetailsIN.bp_name !== ""     &&   userDetailsIN.bp_name === bp_name     ){
+  
+          
+        console.log( "in bplan2") ;
 
-    
-        setData( json.data )  ;  
-        setAnswer(  userDetailsIN.bp_answer );  
+        setData( json.data )  ;   
+        
+     //   console.log(   userDetailsIN.bp_answer  ) ;    
+
+        let newArr = userDetailsIN.bp_answer ; 
+
+        console.log(    newArr.length ) ; 
+          
+
+        let tempTextAnswer = []  ; 
+        let tempImgAnswer = []  ;  
+
+
+        for(  let i=0  ; i<newArr.length ; i++ ){
+              
+          let textAnsAtIndex  =  newArr[i].text ; 
+          let imageAnsAtIndex  =  newArr[i].image ; 
+                  
+          
+          tempTextAnswer.push(  textAnsAtIndex ) ; 
+          tempImgAnswer.push(  imageAnsAtIndex ) ;
+
+           
+          }
+
+
+
+
+
+
+        setTextAnswer(tempTextAnswer );  
+        setImgAnswer( tempImgAnswer ) ;
         setFeedback (  userDetailsIN.bp_feedback) ; 
 
         
 
 
        }else if(   json.status === "success"    &&  userDetailsIN.bp_name !== ""     &&   userDetailsIN.bp_name !== bp_name     ){
+            
 
+        console.log( "in bplan3") ;
         console.log(  "here"  ) ; 
-        setData( json.data )  ;   
-       } else{
+        setData( json.data )  ;    
+
+
+       } else{   
+
+
+           
        
           console.log( json.message) ; 
  
@@ -164,7 +212,7 @@ export default function  Bplan  (   {   route , navigation  }) {
   const getBP = async () => {  
 
     try {
-      const response = await fetch( "http://3.123.37.47:5000/admin/student_bp_name" , 
+      const response = await fetch( "https://learn-up.app/admin/student_bp_name" , 
       {   method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -181,7 +229,7 @@ export default function  Bplan  (   {   route , navigation  }) {
       const json = await response.json();
         
 
-          console.log(   json) ;   
+         // console.log(   json) ;   
        
           
     if(  json.status === "success"){ 
@@ -189,7 +237,7 @@ export default function  Bplan  (   {   route , navigation  }) {
 
 
           setFetchedBpName( json.data.bp_name)  ;  
-          getAllTask(  json.data.bp_name ) ;     
+           getAllTask(  json.data.bp_name ) ;     
 
 
 
@@ -207,66 +255,29 @@ export default function  Bplan  (   {   route , navigation  }) {
     }    
   };
    
-
   
-   // get business plan name  
+  const backAction = () => { 
+     
+    navigation.goBack();
+    return true;
+  };
 
- /*   const getUserDetails = async () => {  
-
-    try {
-      const response = await fetch( "http://3.123.37.47:5000/admin/student_details" , 
-      {   method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-type': 'application/json'  ,
-        }
-    , 
-    body: JSON.stringify({
-       
-      _id :  route.params.userData._id 
- 
-  }),
-}
-     ); 
-      const json = await response.json();
-      
-
-          console.log(   json) ;    
-
-
-       
-          
-    if(  json.status === "success"){ 
-          
-      // setuserDetails( json.data) ; 
-       getBP(); 
-
-      }else{
-       
-         console.log( json.message) ; 
-
-      }  
-      
-      
-    } catch (error) {
-      console.error(error);
-    }  
-  }; 
- */
-
-  
 
    
-    
-
 
    
   React.useEffect(() => {
 
-  //  console.log( "in bplan")  ;
-    //getUserDetails()  ;  
     
-    getBP(); 
+    getBP();  
+   
+    
+    BackHandler.addEventListener("hardwareBackPress", backAction);
+  
+    return () =>
+      BackHandler.removeEventListener("hardwareBackPress", backAction);
+      
+
 
    }, [ ]);
   
@@ -280,16 +291,102 @@ export default function  Bplan  (   {   route , navigation  }) {
     console.log ( index )  ;   
     console.log ( value )  ;   
     
-    const demoAnswer =  Answer ;
+    const demoAnswer =  textAnswer ;
     demoAnswer[index]   = value ; 
-    setAnswer( demoAnswer)  ; 
+    setTextAnswer( demoAnswer)  ; 
     
-}
+} 
 
 
+
+ // get image url and save for submit
+ 
+  const getUrl = async (  result  , index)  => { 
+
+   
+    console.log( "geturl") ;  
+    console.log( result ) ;    
+    console.log( index); 
+ 
+    
+    const   submit_img =  async ( result) => {   
+          
+     const data = new FormData();
+     data.append('file', {name  : result.name , 
+        type : result.mimeType , 
+        uri : result.uri
+     });
+ 
+ 
+ 
+     try {
+       const response = await fetch( "https://learn-up.app/admin/upload_file_c" , 
+ 
+       {   method: 'POST',
+           headers: {
+             'Content-type': "multipart/form-data"  ,
+         }
+     , 
+         body:   data
+ }
+      );
+       const json = await response.json();
+         
+ 
+           console.log(   json) ;   
+ 
+          if(  json.status === "success"){ 
+ 
+           alert( "Upload Successful") ;  
+           const demoAnswer =  imgAnswer ;
+           demoAnswer[index]   =  json.file_url ; 
+          setImgAnswer( demoAnswer)  ;
+
+            
+          }else{
+           alert( "Please try again!") ; 
+          }
+     } catch (error) {
+       console.log(error);
+     } 
+ 
   
+ };
+    submit_img( result)  ;  
+ 
+   }
 
+   //   submit picture  
+   const  updateAnswerImg  =   async(  index  ) => { 
 
+    
+      try { 
+ 
+       const result = await DocumentPicker.getDocumentAsync({ 
+        
+         type: 'image/*',
+         
+       })
+       if (result.type === 'cancel') { 
+       
+         alert('File not selected!');
+         return;
+       } 
+       
+       
+      
+        getUrl( result  ,  index) ; 
+ 
+     } catch(err) {
+           
+       alert( "Please try again!") ; 
+       console.log("Error picking document: ", err);
+     }
+     
+
+   }  
+ 
+ 
 
   
 
@@ -299,20 +396,39 @@ export default function  Bplan  (   {   route , navigation  }) {
 
     // to submit business plan 
 
-  const submitBplan  = ()  => {
+  const submitBplan  = async ()  => {
    
-      
-       
+      console.log( textAnswer) ; 
+      console.log( imgAnswer) ; 
+      console.log( data.length) ; 
       
 
-      const   submit_bp =  async () => {   
-      
-        console.log (  Answer)  ;   
-        console.log (   route.params.userData._id )  ;    
+      let ansObj = [] ;
+
+      for(  let i=0  ; i< data.length ; i++ ){
          
 
+        let newObj ={
+           text : (textAnswer[i]) ? (textAnswer[i]) : ""  , 
+           image : (imgAnswer[i])  ? ( imgAnswer[i]) : "" , 
+           sub_type  : data[i].sub_type
+        }
+     
+        ansObj.push( newObj ) ; 
+
+      } 
+    
+      console.log( ansObj) ;
+      
+
+      const   submit_bp =  async ( ansObj) => {   
+       
+
+        console.log( ansObj) ; 
+      
+
         try {
-          const response = await fetch( "http://3.123.37.47:5000/admin/bp_answer" , 
+          const response = await fetch( "https://learn-up.app/admin/bp_answer" , 
           {   method: 'POST',
               headers: {
                 'Accept': 'application/json',
@@ -322,7 +438,7 @@ export default function  Bplan  (   {   route , navigation  }) {
         body: JSON.stringify({
            
           _id :  route.params.userData._id , 
-          bp_answer :  Answer , 
+          bp_answer :  ansObj , 
           bp_submitted  : "Yes"  , 
           bp_name :  fetchedBpName
      
@@ -339,7 +455,7 @@ export default function  Bplan  (   {   route , navigation  }) {
         if(  json.status === "success"   ){ 
               
           alert( json.message) ; 
-          navigation.navigate( "Home"    ,  {   userData :  userDetails   }   ) 
+         // navigation.navigate( "Home"    ,  {   userData :  userDetails   }   ) 
 
     
           }else{
@@ -354,15 +470,123 @@ export default function  Bplan  (   {   route , navigation  }) {
           console.error(error);
         } 
 
+      } 
+
+  submit_bp( ansObj) ;
+
      
    };
-       submit_bp()  ;     
 
+           
+
+
+
+   const   download_bp =  async ( ) => {  
+
+   
+
+    console.log( "download" ) ; 
+ /*    console.log( data.length) ;
+    console.log( textAnswer.length) ;
+    console.log( imgAnswer.length) ;
+    console.log( feedback.length ) ; */ 
+    
+    let downloadContent = [] ; 
+
+    for(  let i=0  ;  i<  data.length ; i++ ){
+
+
+          let tempObj =  { 
+             
+            ques : data[i].task_name  ,
+
+            text : textAnswer[i]  ,
+
+            img : imgAnswer[i]  , 
+
+            feedback :  feedback[i]
+
+
+          }
+            downloadContent.push( tempObj) ; 
+
+    }  
+ 
+
+
+    console.log( downloadContent) ;  
 
        
+    
 
+
+
+    function generateHTMLForData(data) { 
+
+      return `
+        <div > 
+
+          
+
+          <h3> Assigned Task</h3>
+          <p> >${data.ques}!</p> 
+          <br/> 
+
+          
+          <h3>Task Answer</h3>
+          <p>${data.text}</p>
+          <img src=${data.img} alt="No image"> 
+          
+
+          <h3>Feedback given by teacher</h3>
+          <p>${data.feedback }</p>
+        </div>
+      `;
+    }
+
+
+
+
+
+
+
+    const htmlContent =   
+
+     `<!DOCTYPE html>
+     <html lang="en">
+    <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Document</title>
+  <style> 
+  .pp {
+    backgroundcolor: red;
+    font-size: 18px;
   }
+    /* Add your CSS styles here */
+  </style>
+</head>
+<body>
+  ${  downloadContent.map(generateHTMLForData).join('')}
+</body>
+</html>
+`;
+      
 
+
+
+
+    
+    try {
+      const options = {
+        html: htmlContent,
+      };
+      await Print.printAsync(options); 
+    } catch (error) {
+      console.error('Please try again!', error);
+    }  
+  
+   }
 
 
    
@@ -391,7 +615,7 @@ export default function  Bplan  (   {   route , navigation  }) {
 
                  <TextInput   autoCorrect={ false}  
                     placeholder="Type here..."   
-                    defaultValue= { Answer[index]}
+                    defaultValue= { textAnswer[index]}
                     onChangeText= { (   value ) => { updateAnswer(  index ,   value ) }}
                         style = {{ width : "96%"  , backgroundColor : "#FFF"  , height : "50%"  , borderColor :'#5E81F4'  , borderWidth : 1 , borderRadius : 10}} />
      
@@ -431,13 +655,14 @@ export default function  Bplan  (   {   route , navigation  }) {
 
          <TextInput   autoCorrect={ false}  
             placeholder="Type here..."   
-            defaultValue= { Answer[index]}
+            defaultValue= { textAnswer[index]}
             onChangeText= { (   value ) => { updateAnswer(  index ,   value ) }}
                 style = {{ width : "72%"  , backgroundColor : "#FFF"  , height : "50%"  , borderColor :'#5E81F4'  , borderWidth : 1 , borderRadius : 10}} />
 
          
         
-               <TouchableOpacity  style= {{ height : "50%"  , width : "20%" , display  : "flex"   , alignItems : "center" , justifyContent : "center" , flexDirection : "row"  ,  borderColor  : "#5E81F4"  , borderWidth : 1  , borderRadius : 10  , backgroundColor : "#FFF" }}  onPress={() => {  }}  >
+               <TouchableOpacity  style= {{ height : "50%"  , width : "20%" , display  : "flex"   , alignItems : "center" , justifyContent : "center" , flexDirection : "row"  ,  borderColor  : "#5E81F4"  , borderWidth : 1  , borderRadius : 10  , backgroundColor : "#FFF" }} 
+                onPress={ () => {updateAnswerImg(  index  ) }  }  >
               {/*  <MaterialCommunityIcons name="image"  size={30}  />  */}
              <FontAwesomeIcon  name="image"  size={30}  /> 
                </TouchableOpacity>
@@ -472,7 +697,8 @@ export default function  Bplan  (   {   route , navigation  }) {
      
 
 
-                <TouchableOpacity  style= {{ height : "50%"  , width : "20%" , display  : "flex"   , alignItems : "center" , justifyContent : "center"  ,  borderColor  : "#5E81F4"  , borderWidth : 1  , borderRadius : 10  , backgroundColor : "#FFF" }}  onPress={() => {  }}  >
+                <TouchableOpacity  style= {{ height : "50%"  , width : "20%" , display  : "flex"   , alignItems : "center" , justifyContent : "center"  ,  borderColor  : "#5E81F4"  , borderWidth : 1  , borderRadius : 10  , backgroundColor : "#FFF" }}
+                  onPress={   () => {updateAnswerImg(  index  )}  } >
                 <FontAwesomeIcon  name="image"  size={30}   />  
                </TouchableOpacity>
  
@@ -658,7 +884,7 @@ export default function  Bplan  (   {   route , navigation  }) {
                 <View  style= { styles.lower_btn   }>
 
 
-            <TouchableOpacity   style={ {  width : "38.26%"  ,  height : "50%"  ,  backgroundColor : "#FCC046"  ,  borderRadius : 25  , display : "flex"  , alignItems : "center" , justifyContent :"center"} }   onPress= {() => {submitBplan()}}     >
+            <TouchableOpacity   style={ {  width : "38.26%"  ,  height : "50%"  ,  backgroundColor : "#FCC046"  ,  borderRadius : 25  , display : "flex"  , alignItems : "center" , justifyContent :"center"} }   onPress= {   submitBplan}     >
               <Text style = {{ fontWeight : "600"  , fontSize : 16}}> 
               Submit
               </Text>
@@ -666,7 +892,7 @@ export default function  Bplan  (   {   route , navigation  }) {
     
 
 
-            <TouchableOpacity   style={ {  width : "42%"  ,   height : "50%"  ,  backgroundColor : "#FCC046"  ,  borderRadius : 25  , display : "flex"  , alignItems : "center" , justifyContent :"center"} }   >
+            <TouchableOpacity   style={ {  width : "42%"  ,   height : "50%"  ,  backgroundColor : "#FCC046"  ,  borderRadius : 25  , display : "flex"  , alignItems : "center" , justifyContent :"center"} }   onPress= {  download_bp}    >
               <Text style = {{ fontWeight : "600"  , fontSize : 16}}>
                 Download 
               </Text>

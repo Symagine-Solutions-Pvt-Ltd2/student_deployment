@@ -1,20 +1,15 @@
 import { StyleSheet, Text, View  , TextInput ,  Pressable    , StatusBar  , ImageBackground ,  Dimensions, AppRegistry  , TouchableOpacity , Image, ScrollView } from 'react-native';
 
 
-import * as React from 'react';
-import pic2 from "../Images/pic2.jpg" ;  
+import * as React from 'react';  
 import  videoPic from "../Images/videoPic.jpg" ;  
 import tasktextback from "../Images/tasktextback.jpg" ; 
 import textBackPic from "../Images/textBackPic.jpg"  ;  
-import app_backgrounds_picture from "../Images/app_backgrounds_picture.jpg"  ;  
-import video2 from "../assets/video2.mp4" ;  
 import { Video, ResizeMode } from 'expo-av';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';  
 import logo_student from "../Images/logo_student.png" ; 
 import vector from "../Images/vector.png" ;  
-import Checkbox from './Checkbox';
-import  "../app.json" ; 
 import * as DocumentPicker from 'expo-document-picker';
 
 
@@ -30,25 +25,25 @@ const windowHeight = Dimensions.get('window').height;
 export default function  Module (   {   route , navigation  }) { 
  
   const [  currentOrigin  , setCurrentOrigin ] = React.useState( null ) ; 
-  const [  currentElement  , setCurrentElement  ] = React.useState( 0 ) ;  
+  const [  currentElement  , setCurrentElement  ] = React.useState( route.params.currentElement  ) ;  
   const [  textAnswer  , setTextAnswer  ] = React.useState( null ) ;  
   const [  isChecked , setIsChecked  ] = React.useState( [] ) ;   // for handling quiz   
   const [  imageUploadUrl   , setImageUploadUrl ] = React.useState( null ) ; 
   const video = React.useRef(null);  
   const [ data  , setData ] = React.useState( [ { type : "none"} ] ) ; 
   const [ status  , setStatus] = React.useState( {} ) ; 
+  const [ submitButtonStatus  , setSubmitButtonStatus ] = React.useState( "" ) ; 
 
 
 
   console.log( "module") ; 
-  console.log( currentElement) ;
- // console.log( route.params.screenProp ) ;  
+ /*  console.log( currentElement) ;
+ console.log( route.params.screenProp ) ;  
   console.log(  route.params.data.module_name) ;  
- // console.log(  route.params.userData ) ;  
-  console.log(  route.params.moduleNumber ) ;
+  console.log(  route.params.userData ) ;  
+  console.log(  route.params.moduleNumber ) ; */
   console.log( data[currentElement] ) ;
-
-
+  console.log( submitButtonStatus) ;
     
 
   const  getData = async (  ) => {  
@@ -60,7 +55,7 @@ export default function  Module (   {   route , navigation  }) {
 
 
     try {
-      const response = await fetch( "http://3.123.37.47:5000/admin/group_by" ,  
+      const response = await fetch( "https://learn-up.app/admin/group_by" ,  
 
       {   method: 'POST',
           headers: {
@@ -104,8 +99,58 @@ export default function  Module (   {   route , navigation  }) {
 
   const  getAns = async (  ) => {  
        
-    console.log( "getans") ; 
+    console.log( "getans") ;  
+   
+   
+    console.log(  route.params.userData._id ) ;    
+
+
+    try {
+      const response = await fetch( "https://learn-up.app/admin/student_details" ,  
+
+      {   method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'  ,
+        }
+    , 
+    body: JSON.stringify({
+       
+     "_id" :   route.params.userData._id  
+ 
+  }),
+}
+     );
+      const json = await response.json();
+
+      
+    // console.log( json.data.student_module_details[ route.params.moduleNumber]) ; 
+     const newInfo  = json.data.student_module_details[ route.params.moduleNumber] ; 
+  
+
+     const newAnsArr  = newInfo[  route.params.data.module_name] ; 
+
+     console.log( "hi") ; 
+     console.log( newAnsArr[   route.params.currentElement]) ; 
+
+
+     if(  newAnsArr[ route.params.currentElement ]  === "" ){
+       
+       setSubmitButtonStatus("yes") ; 
+
+     }else{
+       setSubmitButtonStatus("") ; 
+     }
+
+    } catch (error) {
+      console.error(error);
+    }   
+
   }
+  
+
+
+
 
 
 
@@ -145,7 +190,7 @@ export default function  Module (   {   route , navigation  }) {
 
 
     try {
-      const response = await fetch( "http://3.123.37.47:5000/admin/upload_file_c" , 
+      const response = await fetch( "https://learn-up.app/admin/upload_file_c" , 
 
       {   method: 'POST',
           headers: {
@@ -179,7 +224,7 @@ export default function  Module (   {   route , navigation  }) {
 
   //   submit picture  
   const submitPicture = async ()  => { 
-   // alert("gjj") ;  
+    
 
    
     try { 
@@ -203,6 +248,7 @@ export default function  Module (   {   route , navigation  }) {
       alert( "Please try again!") ; 
       console.log("Error picking document: ", err);
     }  
+
   }  
 
 
@@ -225,7 +271,7 @@ export default function  Module (   {   route , navigation  }) {
 
     
     try {
-      const response = await fetch( "http://3.123.37.47:5000/admin/motu" , 
+      const response = await fetch( "https://learn-up.app/admin/motu" , 
       {   method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -302,7 +348,7 @@ export default function  Module (   {   route , navigation  }) {
 
     
     try {
-      const response = await fetch( "http://3.123.37.47:5000/admin/motu" , 
+      const response = await fetch( "https://learn-up.app/admin/motu" , 
       {   method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -375,8 +421,8 @@ export default function  Module (   {   route , navigation  }) {
   const handlePrevButton = (  ) => {
      
 
-    setCurrentElement(  currentElement-1 )  ;    
-    console.log(  data[ currentElement - 1 ].type)  ; 
+  //  setCurrentElement(  currentElement-1 )  ;    
+  //  console.log(  data[ currentElement - 1 ].type)  ; 
        
     console.log("inprev")  ;
 
@@ -395,8 +441,8 @@ export default function  Module (   {   route , navigation  }) {
   const  handleNextButton = (  ) => {
      
 
-    setCurrentElement(  currentElement+1 )  ;    
-    console.log(  data[ currentElement + 1 ].sub_type)  ; 
+  //  setCurrentElement(  currentElement+1 )  ;    
+   // console.log(  data[ currentElement + 1 ].sub_type)  ; 
        
     
     console.log("innext")  ;
@@ -513,7 +559,7 @@ export default function  Module (   {   route , navigation  }) {
  
           <View   style={ [  styles.box_alignment , {  height : "60%"  , width : '20%' , backgroundColor : "#5E82F4" ,  borderTopRightRadius :25  , borderBottomRightRadius : 25  } ] } >
  
- <Text style = { { color : "#FFF"  , fontWeight : "700" , fontSize : 20} }>{ route.params.name }</Text>
+ <Text style = { { color : "#FFF"  , fontWeight : "700" , fontSize : 20} }>{ route.params.data.module_name }</Text>
   </View>
      
  
@@ -762,7 +808,7 @@ export default function  Module (   {   route , navigation  }) {
 
          <View   style={ [  styles.box_alignment , {  height : "60%"  , width : '20%' , backgroundColor : "#5E82F4" ,  borderTopRightRadius :25  , borderBottomRightRadius : 25  } ] } >
 
-<Text style = { { color : "#FFF"  , fontWeight : "700" , fontSize : 20} }>{ route.params.name }</Text>
+<Text style = { { color : "#FFF"  , fontWeight : "700" , fontSize : 20} }>{ route.params.data.module_name }</Text>
  </View>
     
 
@@ -1024,7 +1070,7 @@ export default function  Module (   {   route , navigation  }) {
    
             <View   style={ [  styles.box_alignment , {  height : "60%"  , width : '20%' , backgroundColor : "#5E82F4" ,  borderTopRightRadius :25  , borderBottomRightRadius : 25  } ] } >
    
-   <Text style = { { color : "#FFF"  , fontWeight : "700" , fontSize : 20} }>{ route.params.name }</Text>
+   <Text style = { { color : "#FFF"  , fontWeight : "700" , fontSize : 20} }>{ route.params.data.module_name }</Text>
     </View>
        
    
@@ -1239,7 +1285,7 @@ export default function  Module (   {   route , navigation  }) {
  
           <View   style={ [  styles.box_alignment , {  height : "60%"  , width : '20%' , backgroundColor : "#5E82F4" ,  borderTopRightRadius :25  , borderBottomRightRadius : 25  } ] } >
  
- <Text style = { { color : "#FFF"  , fontWeight : "700" , fontSize : 20} }>{ route.params.name }</Text>
+ <Text style = { { color : "#FFF"  , fontWeight : "700" , fontSize : 20} }>{ route.params.data.module_name }</Text>
   </View>
      
  
@@ -1290,9 +1336,9 @@ export default function  Module (   {   route , navigation  }) {
             
              <View  style={{ height : "20%"  , width : "75%"    , display : "flex"  , alignItems : "flex-end"  , justifyContent : "center"}} > 
               
-              <TouchableOpacity  style={[{ height : "50%"  , width : "20%"   , backgroundColor : '#C8C8C8'  , borderRadius : 20  , display : "flex"  , justifyContent : 'center'  , alignItems : 'center'} , { backgroundColor : '#C8C8C8'  } ] }
-                 disabled= { false}  onPress={ submitTextToDb}      >
-                 <Text>Submit</Text>
+              <TouchableOpacity  style={[{ height : "50%"  , width : "20%"    , borderRadius : 20  , display : "flex"  , justifyContent : 'center'  , alignItems : 'center'} , ( submitButtonStatus === "yes" )? styles.button_active  : styles.button_inactive   ] }
+                 disabled= { (submitButtonStatus === "yes" )? false : true}  onPress={ submitTextToDb} >
+                 <Text >Submit</Text>
               </TouchableOpacity>
              </View>
 
@@ -1490,7 +1536,7 @@ export default function  Module (   {   route , navigation  }) {
      
               <View   style={ [  styles.box_alignment , {  height : "60%"  , width : '20%' , backgroundColor : "#5E82F4" ,  borderTopRightRadius :25  , borderBottomRightRadius : 25  } ] } >
      
-     <Text style = { { color : "#FFF"  , fontWeight : "700" , fontSize : 20} }>{ route.params.name }</Text>
+     <Text style = { { color : "#FFF"  , fontWeight : "700" , fontSize : 20} }>{ route.params.data.module_name }</Text>
       </View>
          
      
@@ -1541,11 +1587,11 @@ export default function  Module (   {   route , navigation  }) {
                 
                  <View  style={{ height : "20%"  , width : "75%"    , display : "flex"  , alignItems : "flex-end"  , justifyContent : "center"}} > 
                   
-                  <Pressable  style={{ height : "50%"  , width : "20%"   , backgroundColor : '#FCC046'  , borderRadius : 20  , display : "flex"  , justifyContent : 'center'  , alignItems : 'center'}}
-                    onPress={ submitPictureToDb}
+                  <TouchableOpacity   style={[{ height : "50%"  , width : "20%"    , borderRadius : 20  , display : "flex"  , justifyContent : 'center'  , alignItems : 'center'}  , ( submitButtonStatus === "yes" )? styles.button_active  : styles.button_inactive   ]}
+                      disabled= { (submitButtonStatus === "yes" )? false : true}      onPress={ submitPictureToDb}
                   >
                      <Text>Submit</Text>
-                  </Pressable>
+                  </TouchableOpacity>
                  </View>
     
     
@@ -1841,7 +1887,18 @@ const styles = StyleSheet.create({
     alignItems : "flex-start" , 
     justifyContent : "center" , 
     paddingLeft : 20
-  }
+  }  , 
+  
+  button_active : {
+    
+    backgroundColor : '#FCC046' 
+
+  }  , 
+   
+  button_inactive : {
+   
+    backgroundColor :  '#C8C8C8'
+  }  , 
 
 
 
