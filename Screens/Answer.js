@@ -125,7 +125,7 @@ export default function  Answers  (   {   route , navigation  }) {
 
                         <TouchableOpacity  style= {{ height : "15%"  , width : "40%" }} >
                           
-                        <MaterialCommunityIcons name="certificate"  size={30}  color={ "#B6B7D0"} />
+                        <MaterialCommunityIcons name="certificate"  size={30}  color={ "#B6B7D0"}    onPress= {() => { alert("To receive your certificate, please contact your teacher." )} }      />
                         </TouchableOpacity> 
 
 
@@ -496,6 +496,8 @@ const styles = StyleSheet.create({
    ,
 
 
+
+   
       row : {
            
              height : windowHeight/3,

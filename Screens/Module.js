@@ -5,12 +5,14 @@ import * as React from 'react';
 import  videoPic from "../Images/videoPic.jpg" ;  
 import tasktextback from "../Images/tasktextback.jpg" ; 
 import textBackPic from "../Images/textBackPic.jpg"  ;  
-import { Video, ResizeMode } from 'expo-av';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';  
 import logo_student from "../Images/logo_student.png" ; 
-import vector from "../Images/vector.png" ;  
-import * as DocumentPicker from 'expo-document-picker';
+import vector from "../Images/vector.png" ;   
+import * as DocumentPicker from 'expo-document-picker'; 
+import { Video , ResizeMode } from 'expo-av'
+import VideoPlayer from 'expo-video-player'
+
 
 
 
@@ -32,26 +34,26 @@ export default function  Module (   {   route , navigation  }) {
   const video = React.useRef(null);  
   const [ data  , setData ] = React.useState( [ { type : "none"} ] ) ; 
   const [ status  , setStatus] = React.useState( {} ) ; 
+  const [ refreshScreen  , setRefreshScreen ] = React.useState(  new Date().toLocaleString()  ) ; 
   const [ submitButtonStatus  , setSubmitButtonStatus ] = React.useState( "" ) ; 
 
 
 
-  console.log( "module") ; 
+//  console.log( "module") ; 
  /*  console.log( currentElement) ;
  console.log( route.params.screenProp ) ;  
   console.log(  route.params.data.module_name) ;  
   console.log(  route.params.userData ) ;  
-  console.log(  route.params.moduleNumber ) ; */
+  console.log(  route.params.moduleNumber ) ;
   console.log( data[currentElement] ) ;
-  console.log( submitButtonStatus) ;
-    
+  console.log( submitButtonStatus) ; */
+     
+
+  //console.log( data[currentElement] ) 
 
   const  getData = async (  ) => {  
      
     
-
-
-  /*   console.log(  "ingetdata" ) ;  */ 
 
 
     try {
@@ -74,11 +76,19 @@ export default function  Module (   {   route , navigation  }) {
       const json = await response.json();
 
         
-    //   console.log(   json  ) ;  
+       // console.log(   json.data   ) ;  
 
        if(  json.status === "success"){  
+            
          
-             setData( json.data )  ;  
+        let tempArr =  json.data  ;
+         tempArr.push( {   name : "Congratulations, you have completed the module."  , sub_type : "complete"  })
+
+        
+        console.log(   tempArr.length    ) ;  
+        console.log(   tempArr  ) ;  
+   
+             setData( tempArr  )  ;  
        }
         else{
        
@@ -96,13 +106,22 @@ export default function  Module (   {   route , navigation  }) {
 
 
 
+ 
+
+
+
+
+
+
+
+
+
+
 
   const  getAns = async (  ) => {  
        
     console.log( "getans") ;  
-   
-   
-    console.log(  route.params.userData._id ) ;    
+ 
 
 
     try {
@@ -116,29 +135,32 @@ export default function  Module (   {   route , navigation  }) {
     , 
     body: JSON.stringify({
        
-     "_id" :   route.params.userData._id  
+     "_id" :   route.params.userData._id.$oid 
  
   }),
 }
      );
       const json = await response.json();
 
-      
-    // console.log( json.data.student_module_details[ route.params.moduleNumber]) ; 
+       
+
+    //  console.log( json.data) ; 
      const newInfo  = json.data.student_module_details[ route.params.moduleNumber] ; 
   
 
      const newAnsArr  = newInfo[  route.params.data.module_name] ; 
 
-     console.log( "hi") ; 
+    console.log( "hi") ; 
      console.log( newAnsArr[   route.params.currentElement]) ; 
+     
 
 
      if(  newAnsArr[ route.params.currentElement ]  === "" ){
        
        setSubmitButtonStatus("yes") ; 
 
-     }else{
+     }else{ 
+       setTextAnswer(  newAnsArr[   route.params.currentElement] ) ; 
        setSubmitButtonStatus("") ; 
      }
 
@@ -154,21 +176,62 @@ export default function  Module (   {   route , navigation  }) {
 
 
 
+
+
+
+
+
+
   
   React.useEffect(() => { 
     
-    console.log("useeffect") ; 
+    setTextAnswer("Type here...") ; 
+    console.log("useeffect") ;  
+    console.log(  route.params.currentElement  ) ; 
     setCurrentElement(  route.params.currentElement );   
     getData();  
     getAns();
+    console.log( data[currentElement] )
     
 
 
-  }  , [   route.params.screenProp  ,  route.params.currentElement ]) ; 
+  }  , [   route.params.screenProp  ,  route.params.currentElement   , refreshScreen ]) ; 
 
 
 
   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // get image url and save for submit
   const getUrl = async (  result)  => { 
@@ -207,10 +270,10 @@ export default function  Module (   {   route , navigation  }) {
 
          if(  json.status === "success"){ 
 
-          alert( "Upload Successful") ; 
+          alert( "Your file was selected succesfully.") ; 
               setImageUploadUrl(  json.file_url)  ; 
          }else{
-          alert( "Please try again!") ; 
+          alert( "There was an error. Please try again.") ; 
          }
     } catch (error) {
       console.log(error);
@@ -235,7 +298,7 @@ export default function  Module (   {   route , navigation  }) {
       })
       if (result.type === 'cancel') { 
       
-        alert('File not selected!');
+        alert('Please select your file.');
         return;
       } 
       
@@ -245,11 +308,23 @@ export default function  Module (   {   route , navigation  }) {
 
     } catch(err) {
           
-      alert( "Please try again!") ; 
+      alert( "There was an error. Please try again.") ; 
       console.log("Error picking document: ", err);
     }  
 
   }  
+ 
+
+
+
+
+
+
+
+
+
+
+
 
 
  
@@ -280,7 +355,7 @@ export default function  Module (   {   route , navigation  }) {
     , 
     body: JSON.stringify({
        
-      "student_id" : route.params.userData._id  ,
+      "student_id" : route.params.userData._id.$oid   ,
       "module_no":   route.params.moduleNumber , 
       "module_name":  route.params.data.module_name ,  
       "index_no" : `${currentElement}`  ,
@@ -297,7 +372,8 @@ export default function  Module (   {   route , navigation  }) {
        
           
     if(  json.status === "success"   ){ 
-          
+           
+
       alert(  json.message ) ; 
       setImageUploadUrl( null) ;
 
@@ -316,7 +392,8 @@ export default function  Module (   {   route , navigation  }) {
  
 } else{ 
 
-  alert( "Please try again!") ; 
+  alert( "No file was selected. Please try again.") ; 
+  
 }
   };
    submit_to_db()  ; 
@@ -332,6 +409,92 @@ export default function  Module (   {   route , navigation  }) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // to save student text answers 
+
  const submitTextToDb = async ()  => { 
  
  
@@ -339,12 +502,20 @@ export default function  Module (   {   route , navigation  }) {
   console.log( route.params.moduleNumber ) ; 
   console.log( route.params.data.module_name ) ; 
   console.log( currentElement) ; 
-  console.log( textAnswer ) ; 
+  console.log( textAnswer ) ;  
 
+
+
+  
+  let  dateTimeRefresher =   new Date().toLocaleString() ; 
+
+  setRefreshScreen( dateTimeRefresher) ; 
+
+  //alert( dateTimeRefresher );
 
   const   submit_to_db =  async () => {    
      
-    if(   textAnswer !== null ){
+    if(   textAnswer !== "Type here..." ){
 
     
     try {
@@ -357,12 +528,12 @@ export default function  Module (   {   route , navigation  }) {
     , 
     body: JSON.stringify({
        
-      "student_id" : route.params.userData._id  ,
+      "student_id" : route.params.userData._id.$oid   ,
       "module_no":    route.params.moduleNumber , 
       "module_name":  route.params.data.module_name ,  
       "index_no" : `${currentElement}`   , 
        "details" :  textAnswer
- 
+								
   }),
 }
      );
@@ -375,8 +546,8 @@ export default function  Module (   {   route , navigation  }) {
           
     if(  json.status === "success"   ){ 
           
-     alert(  json.message ) ; 
-    //   setTextAnswer( null) ; 
+     alert(  json.message ) ;  
+     // setTextAnswer( null) ; 
 
       }else{
          
@@ -384,7 +555,9 @@ export default function  Module (   {   route , navigation  }) {
 
       }  
       
-      
+       setTextAnswer( null) ;  
+
+
     } catch (error) {
       console.error(error);
     } 
@@ -392,7 +565,7 @@ export default function  Module (   {   route , navigation  }) {
  
 } else{ 
 
-  alert( "Please type answer!") ; 
+  alert( "Please write your answer.") ; 
 }
   };
    submit_to_db()  ; 
@@ -415,8 +588,47 @@ export default function  Module (   {   route , navigation  }) {
 
 
 
+ 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // to handle next and prev module content 
 
   const handlePrevButton = (  ) => {
      
@@ -424,11 +636,11 @@ export default function  Module (   {   route , navigation  }) {
   //  setCurrentElement(  currentElement-1 )  ;    
   //  console.log(  data[ currentElement - 1 ].type)  ; 
        
-    console.log("inprev")  ;
+    //console.log("inprev")  ;
 
       if(  data[ currentElement - 1 ].sub_type === "quiz"     ) {
            
-        navigation.navigate( "Quiz"     ,  {   currentElement : currentElement - 1   ,    totalLength  :  data.length     , data : data   , screenProp : route.params.screenProp   , userData :  route.params.userData   ,   moduleNumber :  route.params.moduleNumber   , moduledetails :  route.params.data  }   )  ;   
+        navigation.navigate( "Quiz"     ,  {   currentElement : currentElement - 1   ,    totalLength  :  data.length     , data : data   , screenProp : route.params.screenProp   , userData :  route.params.userData   ,   moduleNumber :  route.params.moduleNumber   , moduledetails :  route.params.data    ,   screenType : "quiz_screen" }   )  ;   
 
       }  else{
 
@@ -445,13 +657,13 @@ export default function  Module (   {   route , navigation  }) {
    // console.log(  data[ currentElement + 1 ].sub_type)  ; 
        
     
-    console.log("innext")  ;
+   // console.log("innext")  ;
 
       if(  data[ currentElement + 1 ].sub_type === "quiz"     ) {  
 
 
            
-        navigation.navigate( "Quiz"     ,  {   currentElement : currentElement +1   ,    totalLength  :  data.length     , data : data   , screenProp : route.params.screenProp  ,   userData :  route.params.userData  ,  moduleNumber :  route.params.moduleNumber   ,  moduledetails :  route.params.data }   )  ;  
+        navigation.navigate( "Quiz"     ,  {   currentElement : currentElement+1   ,    totalLength  :  data.length     , data : data   , screenProp : route.params.screenProp  ,   userData :  route.params.userData  ,  moduleNumber :  route.params.moduleNumber   ,  moduledetails :  route.params.data   ,   screenType : "quiz_screen" }   )  ;  
 
       } else{
 
@@ -467,12 +679,86 @@ export default function  Module (   {   route , navigation  }) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
    if(   data[currentElement].sub_type  === "text" ) {
 
-       
-
-   
-
+      
 
   return(
 
@@ -517,7 +803,7 @@ export default function  Module (   {   route , navigation  }) {
 
                           <Pressable  style= {{ height : "15%"  , width : "40%" }} >
                             
-                          <MaterialCommunityIcons name="certificate"  size={30}  color={ "#B6B7D0"} />
+                        <MaterialCommunityIcons name="certificate"  size={30}  color={ "#B6B7D0"}    onPress= {() => { alert("To receive your certificate, please contact your teacher." )} }      />
                           </Pressable> 
 
 
@@ -639,8 +925,188 @@ export default function  Module (   {   route , navigation  }) {
 
 
    }     
+ 
 
 
+
+
+
+
+
+
+
+
+
+   
+   else if(   data[currentElement].sub_type  === "complete" ) {
+
+       
+
+   
+
+
+    return(
+  
+    <View style={ styles.container}   > 
+   <ImageBackground  source={ textBackPic }  resizeMode="cover"  style={styles.image} >  
+    
+    
+   <StatusBar  barStyle="dark-content" 
+        backgroundColor="#f7e5e9"  />  
+         
+   <View  style={ styles.sidebar}    >
+        
+      
+     
+   <View  style= {{ height : "17%"  , width : '100%'  , display : "flex"  , alignItems: "center"  , justifyContent : "flex-end"   }}>
+                    
+                   
+                    <Image  resizeMode='contain'  style = {{ height : "80%"  , width : "80%"}}  source={ logo_student } /> 
+                  
+  
+                  </View>   
+                   
+  
+  
+  
+                  <View  style= {{ height : "65%"  , width : "100%"  , display : "flex"   ,  justifyContent : "center" }}>
+      
+    
+                  <View  style= {{ height : "60%"  , width : "100%" ,  display : "flex"  , justifyContent : "space-around"  , alignItems : "center"}} >  
+  
+  
+  
+    
+                        <Pressable  style= {{ height : "15%"  , width : "40%" }}  onPress= {() => {   navigation.navigate( "Home"   ,  { userData : route.params.userData }  ) }}  >
+                        <MaterialCommunityIcons name="grid"  size={30}  color={ "#B6B7D0"} />
+                        </Pressable> 
+  
+  
+                        <Pressable  style= {{ height : "15%"  , width : "40%"}}    onPress= {() => {   navigation.navigate( "Bplan"     ,  { userData : route.params.userData }   ) }}  >
+                        <MaterialCommunityIcons name="receipt"  size={30}  color={ "#B6B7D0"} />
+                            </Pressable>  
+  
+  
+  
+  
+                            <Pressable  style= {{ height : "15%"  , width : "40%" }} >
+                              
+                            <MaterialCommunityIcons name="certificate"  size={30}  color={ "#B6B7D0"}    onPress= {() => { alert("To receive your certificate, please contact your teacher." )} }      />
+                            </Pressable> 
+  
+  
+                  </View>
+  
+                    
+                  </View>
+                    
+                  <View  style= {{ height : "18%"  , width : "100%"  , display : "flex"  , alignItems : "center" , justifyContent : "center"}}>
+              
+                 
+                 <Pressable  style= { [  styles.alignment ,  { height : "30%"  , width : "50%"}] }     >
+  
+          
+                 <MaterialCommunityIcons name="logout"  size={30}  color={ "#F06B6D"}   onPress= {() => {   navigation.navigate( "LogIn") }} /> 
+                 </Pressable>
+                 <View>
+  
+                 </View>
+                    
+                  </View>
+  
+  
+  
+  
+        </View> 
+        
+       
+       
+       
+        <View style={ styles.body} >  
+        
+     
+   
+   
+   
+            <View    style={ styles.view1} >     
+             
+   
+            <View   style={ [  styles.box_alignment , {  height : "60%"  , width : '20%' , backgroundColor : "#5E82F4" ,  borderTopRightRadius :25  , borderBottomRightRadius : 25  } ] } >
+   
+   <Text style = { { color : "#FFF"  , fontWeight : "700" , fontSize : 20  } }>{ route.params.data.module_name }</Text>
+    </View>
+      
+   
+   
+   <View  style= {{  height : "60%"  , width : '25%'  ,  display : "flex"  , justifyContent : 'center'  ,   alignItems :"center"  ,   flexDirection  : "row"   , backgroundColor :"#D9D9D9"  , borderTopLeftRadius : 25 , borderBottomLeftRadius :  25  , overflow :"hidden" }}>  
+                        
+                        
+                          
+                        <Image  resizeMode='contain'  style = {{ height : "80%"  , width : "25%"}}  source={ vector  } /> 
+                                          
+                                             
+                 
+                                     <View style={{    height : "80%"  , width : '75%'    ,   display : "flex"   , alignItems : "flex-start"  , justifyContent : "center"  , paddingLeft : 2  }}>
+                                                   
+                               <Text style={{   fontSize : 17  , color : "#353B55"  , fontWeight : "700"  , fontStyle : "normal"}}>{ route.params.userData.student_name  }</Text> 
+                 
+                               <Text style={{ fontSize : 10  , color : "#5A6198"  , fontWeight : "600"  , fontStyle : "normal"  }} >{ route.params.userData.school_name  } </Text>
+                                               </View>
+                                   </View>
+   
+   
+            </View> 
+       
+        
+            <View    style={ [styles.view2   , {  justifyContent : "center"  , alignItems : "center"  } ] } >      
+       
+           
+        <Text  style={{  fontWeight: '800' ,  fontStyle: 'normal'  , fontSize:35 ,  color : "#353B55"  }} >{    data[currentElement].name }</Text>
+       
+            </View> 
+       
+          
+       
+       
+            <View    style={ styles.view3} >  
+              
+            <View  style={  styles.view3_inner_view  }  >
+       
+              
+            <Pressable   disabled={ ( currentElement >= 1) ? false : true }  onPress={ () => {   handlePrevButton( ) }}   style={ styles.btn }  >
+       <MaterialCommunityIcons name="chevron-left"  size={45}   color= { ( currentElement >= 1 )? "#000" : "#808080"}  />
+       </Pressable> 
+  
+  
+       <Pressable   disabled={ ( currentElement <= data.length - 2 ) ? false : true }  onPress={ () => {   handleNextButton( ) }}    style={ styles.btn }   >
+       <MaterialCommunityIcons name="chevron-right"  size={45}    color= { (  currentElement <= data.length - 2 )? "#000" : "#808080"} />
+       </Pressable>
+       
+            
+            </View >
+           
+       
+            </View>
+       
+         </View>  
+   
+  
+  </ImageBackground>
+    </View> 
+  
+  
+  
+  
+  
+  
+    ) ;
+    
+  
+  
+     }     
+  
+  
+  
 
  
 
@@ -730,6 +1196,10 @@ export default function  Module (   {   route , navigation  }) {
       <View style={ styles.container}   > 
            
         <ImageBackground  source={ videoPic  } resizeMode="cover"  style={styles.image} > 
+  
+
+        <StatusBar  barStyle="dark-content" 
+       backgroundColor="#f1f2f7"  />    
 
 
     <View  style={ styles.sidebar}   >
@@ -767,7 +1237,7 @@ export default function  Module (   {   route , navigation  }) {
 
                           <Pressable  style= {{ height : "15%"  , width : "40%" }} >
                             
-                          <MaterialCommunityIcons name="certificate"  size={30}  color={ "#B6B7D0"} />
+                          <MaterialCommunityIcons name="certificate"  size={30}  color={ "#B6B7D0"}    onPress= {() => { alert("To receive your certificate, please contact your teacher." )} }      />
                           </Pressable> 
 
 
@@ -831,24 +1301,44 @@ export default function  Module (   {   route , navigation  }) {
          </View> 
     
      
-         <View    style={ styles.view2   } >      
+         <View    style={[ styles.view2 ] }     >      
     
      
-        <View  style={{ height : "80%"  , width : "75%"    , borderRadius : 20 }} > 
+        <View  style={{ height : windowHeight/1.5  , width : "75%"    ,   borderColor : "#5E82F4" ,   borderWidth :  2  , padding : 10  , borderRadius : 10}} > 
  
 
-         <Video
+        <Video
         ref={video}
         style={styles.vid}
         source= {
-        /*   uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',  */
+         // uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',  
                { uri:  data[currentElement].file }
         }
         useNativeControls
         resizeMode={ResizeMode.CONTAIN}
         isLooping
         onPlaybackStatusUpdate={status => setStatus(() => status)}
-      />
+      />  
+    
+   {/*  <VideoPlayer
+        videoProps={{
+         shouldPlay: true,
+       resizeMode: ResizeMode.CONTAIN,
+    source: {
+      uri:  data[currentElement].file 
+    }, 
+
+  
+  }}  
+    
+  style = {{ height :  windowHeight/1.6 }}
+ 
+
+/> */}
+
+     
+
+      
             </View>  
 
 
@@ -982,8 +1472,7 @@ export default function  Module (   {   route , navigation  }) {
   
   if(   data[currentElement].sub_type  === "picture" ) {
 
-       
-
+      
    
 
 
@@ -992,7 +1481,8 @@ export default function  Module (   {   route , navigation  }) {
     <View style={ styles.container}   > 
    <ImageBackground  source={ textBackPic } resizeMode="cover"  style={styles.image} >  
   
-         
+   <StatusBar  barStyle="dark-content" 
+       backgroundColor="#f7e5e9"  />
    <View  style={ styles.sidebar}   >
         
      
@@ -1029,7 +1519,7 @@ export default function  Module (   {   route , navigation  }) {
 
                           <Pressable  style= {{ height : "15%"  , width : "40%" }} >
                             
-                          <MaterialCommunityIcons name="certificate"  size={30}  color={ "#B6B7D0"} />
+                          <MaterialCommunityIcons name="certificate"  size={30}  color={ "#B6B7D0"}    onPress= {() => { alert("To receive your certificate, please contact your teacher." )} }      />
                           </Pressable> 
 
 
@@ -1099,14 +1589,16 @@ export default function  Module (   {   route , navigation  }) {
             <View    style={ [styles.view2   , {  justifyContent : "flex-start"} ] } >      
        
            
-               <View  style={{ height : "20%"  , width : "75%"   , borderRadius : 20}} > 
-   
-               <Text> question  hjjhgjds hkuyku iuu  ?? </Text> 
+               <View  style={{ height : "20%"  , width : "75%"   , borderRadius : 20   , padding : 5}} > 
+         <ScrollView style={{ height : "100%" , width : "100%"}}>
+               <Text> { data[currentElement].name}   </Text> 
+               </ScrollView>
                </View>
                
   
               <View  style={{ height : "70%"  , width : "75%"   , backgroundColor : '#FFF'  , borderRadius : 20}} > 
-               <Text> picture </Text> 
+             <Image source= {{ 
+               uri : data[currentElement].file } }  style={{ height : "100%" , width : "100%"}} resizeMode='contain'   /> 
                </View>
   
        
@@ -1207,7 +1699,11 @@ export default function  Module (   {   route , navigation  }) {
                 
        <ImageBackground  source={  tasktextback } resizeMode="cover"  style={styles.image} >  
      
-              
+       <StatusBar  barStyle="dark-content" 
+        backgroundColor="#f7e5e9"  />      
+
+
+
  <View  style={ styles.sidebar}   >
       
    
@@ -1244,7 +1740,7 @@ export default function  Module (   {   route , navigation  }) {
 
                           <Pressable  style= {{ height : "15%"  , width : "40%" }} >
                             
-                          <MaterialCommunityIcons name="certificate"  size={30}  color={ "#B6B7D0"} />
+                          <MaterialCommunityIcons name="certificate"  size={30}  color={ "#B6B7D0"}    onPress= {() => { alert("To receive your certificate, please contact your teacher." )} }      />
                           </Pressable> 
 
 
@@ -1316,7 +1812,7 @@ export default function  Module (   {   route , navigation  }) {
              <View  style={{ height : "20%"  , width : "75%"   , borderRadius : 20  , display : "flex",   flexDirection :"row", paddingTop : 5 }} > 
               
 
-             <Text style = { [styles.text1  , { fontSize : 16  , fontWeight : "700"  } ]}> Instructions.</Text>  
+             <Text style = { [styles.text1  , { fontSize : 16  , fontWeight : "700"  } ]}> Instructions:</Text>  
 
              <ScrollView style = {{ width : "85%" , height : "100%"}}>
              <Text style = {[styles.text1  , { fontSize : 14  , fontWeight : "400"  ,  width :  "100%"  , height : "100%" } ]}  >{data[currentElement].enter_text}</Text>  
@@ -1326,9 +1822,10 @@ export default function  Module (   {   route , navigation  }) {
 
             <View  style={{ height : "60%"  , width : "75%"   , backgroundColor : '#FFF'  , borderRadius : 20}} > 
              <TextInput  
-              placeholder='Type here...' 
+                editable =  { (submitButtonStatus === "yes" )? true : false}
+               defaultValue = { textAnswer } 
              onChangeText = {  setTextAnswer }   
-             style={  { padding : 10  ,  height : "100%"  , width : "100%"  , textAlignVertical : "top"  ,  borderRadius : 20 }}  
+             style={  { padding : 10  ,  height : "100%"  , width : "100%"  , textAlignVertical : "top"  ,  borderRadius : 20  , color : "black"}}  
              multiline   />
              </View>
                
@@ -1495,7 +1992,7 @@ export default function  Module (   {   route , navigation  }) {
     
                               <Pressable  style= {{ height : "15%"  , width : "40%" }} >
                                 
-                              <MaterialCommunityIcons name="certificate"  size={30}  color={ "#B6B7D0"} />
+                              <MaterialCommunityIcons name="certificate"  size={30}  color={ "#B6B7D0"}    onPress= {() => { alert("To receive your certificate, please contact your teacher." )} }      />
                               </Pressable> 
     
     
@@ -1838,7 +2335,8 @@ const styles = StyleSheet.create({
 
     vid : {
 
-      height :"100%"  , 
+      height :"100%"  
+
     
     }  , 
 

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View  , TextInput , FlatList  ,  TouchableOpacity    , StatusBar  , ImageBackground , Dimensions  , Image  , BackHandler   } from 'react-native';
+import { StyleSheet, Text, View  , TextInput , FlatList  ,  TouchableOpacity    , StatusBar  , ImageBackground , Dimensions  , Image  , BackHandler, ScrollView   } from 'react-native';
 
 import React from "react";
 import pic3 from "../Images/pic3.jpg" ;  
@@ -42,7 +42,7 @@ export default function  Bplan  (   {   route , navigation  }) {
 
 
  // console.log( "in bplan " ) ; 
-     /*  console.log( route.params.userData)  ;  */
+      console.log( route.params.userData)  ;  
 
    
        
@@ -50,7 +50,10 @@ export default function  Bplan  (   {   route , navigation  }) {
 
 
   // get all business plan details  
-  const  getAllTask = async ( bp_name  ) => {  
+  const  getAllTask = async ( bp_name  ) => { 
+    
+    const clientTime = new Date() ;
+    console.log(clientTime);
      
      let userDetailsIN  = { } ; 
 
@@ -64,31 +67,33 @@ export default function  Bplan  (   {   route , navigation  }) {
       {   method: 'POST',
           headers: {
             'Accept': 'application/json',
-            'Content-type': 'application/json'  ,
+            'Content-type': 'application/json',
+            'X-Client-Time' : clientTime
         }
     , 
     body: JSON.stringify({
        
-      _id :  route.params.userData._id 
+      _id :  route.params.userData._id.$oid 
  
   }),
 }
      ); 
       const json = await response.json();
       
-
-          console.log(   json) ;    
+ 
+      //   console.log(   json) ;    
 
 
        
           
     if(  json.status === "success"){ 
           
-       setuserDetails( json.data) ; 
+       setuserDetails( json.data ) ; 
         userDetailsIN = json.data ; 
 
       }else{
-       
+         
+
          console.log( json.message) ; 
 
       }  
@@ -124,7 +129,7 @@ export default function  Bplan  (   {   route , navigation  }) {
       const json = await response.json();
 
       
-        console.log(  json.data  ) ;   
+      //  console.log(  json.data  ) ;   
          /*  console.log( userDetailsIN.bp_name ) ;
         console.log( bp_name ) ; */
 
@@ -180,7 +185,7 @@ export default function  Bplan  (   {   route , navigation  }) {
 
        }else if(   json.status === "success"    &&  userDetailsIN.bp_name !== ""     &&   userDetailsIN.bp_name !== bp_name     ){
             
-
+       Alert( "Please check again!")
         console.log( "in bplan3") ;
         console.log(  "here"  ) ; 
         setData( json.data )  ;    
@@ -209,7 +214,14 @@ export default function  Bplan  (   {   route , navigation  }) {
 
   // get business plan name  
 
-  const getBP = async () => {  
+  const getBP = async () => {    
+
+    console.log(  "getBp" ) ;
+    console.log( route.params.userData._id ) ; 
+
+   let  piu =  route.params.userData._id.$oid  ; 
+
+   // alert(  piu ) ; 
 
     try {
       const response = await fetch( "https://learn-up.app/admin/student_bp_name" , 
@@ -221,7 +233,8 @@ export default function  Bplan  (   {   route , navigation  }) {
     , 
     body: JSON.stringify({
        
-      _id :  route.params.userData._id
+      _id :  route.params.userData._id.$oid 
+      
  
   }),
 }
@@ -244,7 +257,7 @@ export default function  Bplan  (   {   route , navigation  }) {
       }else{
          
 
-        alert( json.message ) ;
+         alert( json.message ) ;
          console.log( json.message) ; 
 
       }  
@@ -297,6 +310,9 @@ export default function  Bplan  (   {   route , navigation  }) {
     
 } 
 
+ 
+
+
 
 
  // get image url and save for submit
@@ -320,7 +336,7 @@ export default function  Bplan  (   {   route , navigation  }) {
  
  
      try {
-       const response = await fetch( "https://learn-up.app/admin/upload_file_c" , 
+       const response = await fetch( "https://learn-up.app/admin/upload_file_bp" , 
  
        {   method: 'POST',
            headers: {
@@ -337,14 +353,14 @@ export default function  Bplan  (   {   route , navigation  }) {
  
           if(  json.status === "success"){ 
  
-           alert( "Upload Successful") ;  
+           alert( "Your file was selected succesfully.") ;  
            const demoAnswer =  imgAnswer ;
            demoAnswer[index]   =  json.file_url ; 
           setImgAnswer( demoAnswer)  ;
 
             
           }else{
-           alert( "Please try again!") ; 
+           alert( "There was an error. Please try again.") ; 
           }
      } catch (error) {
        console.log(error);
@@ -355,8 +371,20 @@ export default function  Bplan  (   {   route , navigation  }) {
     submit_img( result)  ;  
  
    }
+ 
 
-   //   submit picture  
+
+
+
+
+
+
+
+
+
+
+
+   //   select picture  
    const  updateAnswerImg  =   async(  index  ) => { 
 
     
@@ -369,7 +397,7 @@ export default function  Bplan  (   {   route , navigation  }) {
        })
        if (result.type === 'cancel') { 
        
-         alert('File not selected!');
+         alert('Please select your file.');
          return;
        } 
        
@@ -379,7 +407,7 @@ export default function  Bplan  (   {   route , navigation  }) {
  
      } catch(err) {
            
-       alert( "Please try again!") ; 
+       alert( "There was an error. Please try again.") ; 
        console.log("Error picking document: ", err);
      }
      
@@ -419,7 +447,10 @@ export default function  Bplan  (   {   route , navigation  }) {
       } 
     
       console.log( ansObj) ;
-      
+       
+
+
+
 
       const   submit_bp =  async ( ansObj) => {   
        
@@ -437,7 +468,7 @@ export default function  Bplan  (   {   route , navigation  }) {
         , 
         body: JSON.stringify({
            
-          _id :  route.params.userData._id , 
+          _id :  route.params.userData._id.$oid  , 
           bp_answer :  ansObj , 
           bp_submitted  : "Yes"  , 
           bp_name :  fetchedBpName
@@ -472,7 +503,7 @@ export default function  Bplan  (   {   route , navigation  }) {
 
       } 
 
-  submit_bp( ansObj) ;
+        submit_bp( ansObj) ;
 
      
    };
@@ -603,7 +634,7 @@ export default function  Bplan  (   {   route , navigation  }) {
                  <Text  >  { index+1  }  </Text>
 
                 </View> 
-                <View style={ [  styles.box_alignment , {  width : "23.04%" , borderColor :"#B6B7D0"  , borderBottomWidth : 1  , borderRightWidth : 1 } ]} >
+                <View style={ [  styles.box_alignment , {  width : "23.04%" , borderColor :"#B6B7D0"  , borderBottomWidth : 1  , borderRightWidth : 1  ,  padding : 5 } ]} >
                  <Text> { item.task_name} </Text>
 
                 </View> 
@@ -617,7 +648,7 @@ export default function  Bplan  (   {   route , navigation  }) {
                     placeholder="Type here..."   
                     defaultValue= { textAnswer[index]}
                     onChangeText= { (   value ) => { updateAnswer(  index ,   value ) }}
-                        style = {{ width : "96%"  , backgroundColor : "#FFF"  , height : "50%"  , borderColor :'#5E81F4'  , borderWidth : 1 , borderRadius : 10}} />
+                        style = {{ width : "96%"  , backgroundColor : "#FFF"  , height : "50%"  , borderColor :'#5E81F4'  , borderWidth : 1 , borderRadius : 10  ,   padding : 5 }} />
      
                   
 
@@ -625,7 +656,9 @@ export default function  Bplan  (   {   route , navigation  }) {
                 </View> 
                
 
-                <View  style={[  styles.box_alignment ,  {  width : "25.26%"  , borderColor :"#B6B7D0"  , borderBottomWidth : 1}]  } >
+                <View  style={[  styles.box_alignment ,  {  width : "25.26%"  , borderColor :"#B6B7D0"  , borderBottomWidth : 1 ,  padding : 5 }]  } >  
+
+
                  <Text>  { feedback [index]  } </Text>
 
                 </View>
@@ -639,11 +672,11 @@ export default function  Bplan  (   {   route , navigation  }) {
 
         <View style={ styles.row }  >   
 
-        <View  style={[ styles.box_alignment , {  width : "8.09%"    , borderColor :"#B6B7D0"  , borderBottomWidth : 1  , borderRightWidth : 1 } ] }  >
+        <View  style={[ styles.box_alignment , {  width : "8.09%"    , borderColor :"#B6B7D0"  , borderBottomWidth : 1  , borderRightWidth : 1  ,   } ] }  >
          <Text  >  { index+1  }  </Text>
 
         </View> 
-        <View style={ [  styles.box_alignment , {  width : "23.04%" , borderColor :"#B6B7D0"  , borderBottomWidth : 1  , borderRightWidth : 1 } ]} >
+        <View style={ [  styles.box_alignment , {  width : "23.04%" , borderColor :"#B6B7D0"  , borderBottomWidth : 1  , borderRightWidth : 1 ,  padding : 5  } ]} >
          <Text> { item.task_name} </Text>
 
         </View> 
@@ -657,11 +690,11 @@ export default function  Bplan  (   {   route , navigation  }) {
             placeholder="Type here..."   
             defaultValue= { textAnswer[index]}
             onChangeText= { (   value ) => { updateAnswer(  index ,   value ) }}
-                style = {{ width : "72%"  , backgroundColor : "#FFF"  , height : "50%"  , borderColor :'#5E81F4'  , borderWidth : 1 , borderRadius : 10}} />
+                style = {{ width : "72%"  , backgroundColor : "#FFF"  , height : windowHeight/12  , borderColor :'#5E81F4'  , borderWidth : 1 , borderRadius : 10 , padding : 5 }} />
 
          
         
-               <TouchableOpacity  style= {{ height : "50%"  , width : "20%" , display  : "flex"   , alignItems : "center" , justifyContent : "center" , flexDirection : "row"  ,  borderColor  : "#5E81F4"  , borderWidth : 1  , borderRadius : 10  , backgroundColor : "#FFF" }} 
+               <TouchableOpacity  style= {{ height : windowHeight/12  , width : "20%" , display  : "flex"   , alignItems : "center" , justifyContent : "center" , flexDirection : "row"  ,  borderColor  : "#5E81F4"  , borderWidth : 1  , borderRadius : 10  , backgroundColor : "#FFF" }} 
                 onPress={ () => {updateAnswerImg(  index  ) }  }  >
               {/*  <MaterialCommunityIcons name="image"  size={30}  />  */}
              <FontAwesomeIcon  name="image"  size={30}  /> 
@@ -670,9 +703,10 @@ export default function  Bplan  (   {   route , navigation  }) {
         </View> 
        
 
-        <View  style={[  styles.box_alignment ,  {  width : "25.26%"  , borderColor :"#B6B7D0"  , borderBottomWidth : 1}]  } >
+        <View  style={[  styles.box_alignment ,  {  width : "25.26%"  , borderColor :"#B6B7D0"  , borderBottomWidth : 1 ,  padding : 5 }]  } > 
+         
+   
          <Text>  { feedback [index]  } </Text>
-
         </View>
   
         </View>
@@ -687,7 +721,7 @@ export default function  Bplan  (   {   route , navigation  }) {
                  <Text  >  { index+1  }  </Text>
 
                 </View> 
-                <View style={ [  styles.box_alignment , {  width : "23.04%" , borderColor :"#B6B7D0"  , borderBottomWidth : 1  , borderRightWidth : 1 } ]} >
+                <View style={ [  styles.box_alignment , {  width : "23.04%" , borderColor :"#B6B7D0"  , borderBottomWidth : 1  , borderRightWidth : 1  ,  padding : 5 } ]} >
                  <Text> { item.task_name} </Text>
 
                 </View> 
@@ -707,7 +741,7 @@ export default function  Bplan  (   {   route , navigation  }) {
                 </View> 
                
 
-                <View  style={[  styles.box_alignment ,  {  width : "25.26%"  , borderColor :"#B6B7D0"  , borderBottomWidth : 1}]  } >
+                <View  style={[  styles.box_alignment ,  {  width : "25.26%"  , borderColor :"#B6B7D0"  , borderBottomWidth : 1 ,  padding : 5 }]  } >
                  <Text>  { feedback [index]  } </Text>
 
                 </View>
@@ -759,7 +793,7 @@ export default function  Bplan  (   {   route , navigation  }) {
                       </TouchableOpacity> 
 
 
-                      <TouchableOpacity  style= {{ height : "15%"  , width : "40%"}}    onPress= {() => {   navigation.navigate( "Bplan") }}  >
+                      <TouchableOpacity  style= {{ height : "15%"  , width : "40%"}}     >
                       <MaterialCommunityIcons name="receipt"  size={30}  color={ "#B6B7D0"} />
                           </TouchableOpacity>  
 
@@ -768,7 +802,7 @@ export default function  Bplan  (   {   route , navigation  }) {
 
                           <TouchableOpacity  style= {{ height : "15%"  , width : "40%" }} >
                             
-                          <MaterialCommunityIcons name="certificate"  size={30}  color={ "#B6B7D0"} />
+                          <MaterialCommunityIcons name="certificate"  size={30}  color={ "#B6B7D0"}    onPress= {() => { alert("To receive your certificate, please contact your teacher." )} }      />
                           </TouchableOpacity> 
 
 
@@ -1064,8 +1098,8 @@ const styles = StyleSheet.create({
 
      row : {
        
-      width : "100%" , 
-      height : windowHeight / 6, 
+      flex : 1 , 
+     minHeight : windowHeight / 6 , 
       display :  "flex" , 
       flexDirection : "row"
 

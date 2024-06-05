@@ -16,7 +16,8 @@ export default function  GettingStarted (   {   route , navigation  }) {
    <ImageBackground  source={ gettingStarted } resizeMode="cover"  style={styles.image} > 
         
       
-   <StatusBar  />   
+    <StatusBar  barStyle="dark-content" 
+       backgroundColor="#f1f2f7"  />    
 
          <View  style={ styles.v1} > 
          </View> 

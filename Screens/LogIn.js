@@ -1,13 +1,16 @@
 import { StyleSheet, Text, View  , TextInput ,  TouchableOpacity    , StatusBar  , ImageBackground   } from 'react-native';
 
 import React from "react";  
-import pic1 from "../Images/pic1.jpg" ; 
+import pic1 from "../Images/pic1.jpg" ;  
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 export default function  LogIn  (  {   route , navigation  }) {
       
   const [  email , onChangeEmail ] = React.useState("");  // email 
-  const [ password1 , onChangePassword1  ] = React.useState("");    // password 
+  const [ password1 , onChangePassword1  ] = React.useState("");    // password  
+  const [ icon , onChangeIcon ] = React.useState( 'eye-off');
+  const [ visible  , onChangeVisibilty   ] = React.useState( true );    // password
 
 
 
@@ -24,24 +27,33 @@ export default function  LogIn  (  {   route , navigation  }) {
   
    
     const getdata1 =  async () => {  
+  
 
+      const clientTime = new Date() ;
+      console.log( email );
+     
+
+     
      try {
     //  const response = await fetch( 'http://10.0.2.2:8000/student/login'  ,   
-    const response = await fetch( "https://learn-up.app/student/login"    , 
+    const response = await fetch( "https://learn-up.app/student/login"    ,  
 
     {  method: 'POST', 
 
         headers: {
        'Accept': 'application/json',
-       'Content-type': 'application/json'  ,
-   
+       'Content-type': 'application/json'  ,  
+       'X-Client-Time' : clientTime , 
+       "email_id" : email
+        
       }
    , 
 body: JSON.stringify({
   
  
 "email_id":  email , 
-"password": password1 ,
+"password": password1 						
+
 
 }),
 }
@@ -54,10 +66,10 @@ body: JSON.stringify({
    
     if(  json.status === "success"){ 
 
-    alert(  json.message)  ; 
+    alert( json.message)  ; 
     onChangeEmail("")  ;
     onChangePassword1("") ; 
-    navigation.navigate( "Home"    ,   {   userData : json.data   }   ) ;
+    navigation.navigate( "Home"    ,   {   userData : json.data  }   ) ;
     
    
   }else {
@@ -86,6 +98,23 @@ body: JSON.stringify({
 
 
 
+   
+const handlePasswordVisibility   = ()  => {
+            
+  if(  icon == 'eye-off') {
+   
+    onChangeIcon('eye')  ; 
+    onChangeVisibilty( false) ; 
+
+  }else if(    icon == 'eye') {
+
+    onChangeIcon('eye-off')  ; 
+    onChangeVisibilty( true ) ; 
+  }
+      
+ }  ;  
+
+
 
   
 
@@ -103,8 +132,11 @@ body: JSON.stringify({
     return ( 
         <View style={ styles.container}  >
         
-        <ImageBackground  source={pic1 } resizeMode="contain"  style={styles.image} >
-   
+        <ImageBackground  source={pic1 } resizeMode="cover"  style={styles.image} >
+    
+        <StatusBar  barStyle="dark-content" 
+       backgroundColor="#f7e5e9"  />
+
         <View style={styles.view1} >
 
          <View style={styles.view2} > 
@@ -113,11 +145,24 @@ body: JSON.stringify({
          </View> 
 
 
-         <TextInput   style={styles.t2 }  placeholder='Enter your email id' 
+         <TextInput   style= {[ styles.t2  , {  paddingLeft : 10    } ]}  placeholder='Enter your email id' 
         value= { email }  onChangeText= { onChangeEmail }/>  
+         
 
-         <TextInput style={styles.t2}    placeholder='Enter your password' 
+         <View  style={[styles.t2 , { display : "flex" , flexDirection : "row"} ]}  > 
+
+         <TextInput   secureTextEntry={ visible}      style={ styles.password_inp}  placeholder='Enter your password' 
         value= { password1 }  onChangeText= { onChangePassword1}/>   
+
+
+     <TouchableOpacity  style={styles.password_eye}
+     onPress={ () => { handlePasswordVisibility()}} >  
+<MaterialCommunityIcons name={ icon }  size={30}  /> 
+         </TouchableOpacity>  
+
+
+          </View> 
+
 
 
           <View  style={styles.view2}> 
@@ -211,8 +256,7 @@ const styles = StyleSheet.create({
   t2 : {
           
     height : "13.52%"  , 
-    width : "57.44%"   ,  
-    paddingLeft : 10 , 
+    width : "57.44%"   , 
     backgroundColor : "white"  , 
     borderRadius : 25 , 
     borderColor : '#5E82F4' ,
@@ -220,6 +264,25 @@ const styles = StyleSheet.create({
     
 
   } , 
+    
+
+
+  password_inp :  {
+
+    width : "80%" ,
+    borderRadius : 25 ,  
+    paddingLeft : 8, 
+  }
+ , 
+  password_eye  : {
+    width : "20%" , 
+    alignItems : "center" , 
+    height : "100%"  , 
+    borderRadius : 25 ,
+
+  }  , 
+
+
 
    
   text1 : {

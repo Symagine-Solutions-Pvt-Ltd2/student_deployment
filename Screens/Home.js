@@ -23,203 +23,15 @@ import * as FileSystem from 'expo-file-system';
 export default function  Home (   {   route , navigation  }) {
      
       
-    console.log(  route.params.userData ) ; 
-
-  const [ data  , setData ] = useState(  []  
-
-   /*  [   
-
-
-      { 
-
-        name : "Module1"  , 
-
-       data :   [
-
-
-
-      {
-
-        type : "video"  ,  
-        name : "Introduction video" , 
-        video : Module1_0_1 
-
-    }  ,  
+    console.log(  route.params.userData ) ;  
     
-    { 
 
-      type : "video"  ,  
-        name : "Entrepreneurial friends' video" , 
-        video : Module_1_1_0
-
-  }    , 
- 
-
-
-    {
-
-      type : "task_text"  , 
-      question  : "Which of these entrepreneurial friends do you identify with the most? And why?"
-      
-  }  ,    
-
-
-
-{
-
-         type : "video"  ,  
-        name : "Entrepreneurial friends' video" , 
-        video : Module_1_1_2 
-
-}  ,  
-
-
-
-{
-
-  type : "task_text"  , 
-  question  : "Drawing from the experiences of my friends' journeys, lets' examine the key takeaways: What do you think are the essential  requirements for bringing a business idea to life?"
-  
-
-}    , 
-
-{
-
-       type : "video"  ,  
-        name : "Theoretical deep dive video" , 
-        video : Module_1_1_4
-  
-  }    , 
-  
-
-{
-
-  type : "task_text"  , 
-  question : "Felix shared with you the four principles of entrepreneurship: 1) Innovation , 2) Pursuing opportunities , 3) Adapting to change , 4) Strive for unlimited possibilities with limited resources. Think of the example of entrepreneurial friends and their business. Which aspects of their business fall into which principle?"
-
-}  ,   
-
-
-{
-
-  type : "video"  ,  
-  name : "Theoretical deep dive video" , 
-  video : Module_1_1_6
- 
-}    
-  , 
-  
-
-  
-{
-
-  type : "task_text"  ,  
-  question : "Is the business venture of the four friends truly aligned with the classification of social entrepreneurship? What do you think? Please explain and explore the reasons why you may agree or disagree with this statement."
-}  ,  
-
-  
-{
-
-  type : "video"  ,  
-  name : "Theoretical deep dive video" , 
-  video : Module_1_1_8
- 
-}    
-
-]   
-
-
-      }, 
-
-      
-         
-
-
-          { 
-
-            name : "Module2"  , 
-    
-           data :   [
-    
-         
-    
-          {
-    
-            type : "video"  ,  
-            name : "Introduction video" , 
-            video : M2_2_0
-    
-        }  ,    
-
-
-        {
-    
-          type : "video"  ,  
-          name : "Theoretical deep dive video" , 
-          video : M2_2_1 
-  
-      }  , 
-      
-      
-      {
-    
-        type : "quiz"  ,   
-         text : "fghfhf"
-    }  , 
-       
-      
-      {
-    
-        type : "video"  ,  
-        name : "Theoretical deep dive video" , 
-        video : M2_2_3 
-
-    }  , 
-
-    {
-    
-      type : "quiz"  ,   
-       text : "fghfhf"
-  }   ,   
-     
-     
-           ]  
-
-  }  ,   
- 
-
-
-
- {
-  name : "Module3"  , 
-    
-  data :   [
-
-
-
- {
-
-   type : "video"  ,  
-   name : "Introduction video" , 
-   video : "https://learn-up.s3.eu-central-1.amazonaws.com/1651_20240118_170939_422537.mp4"
-
-}  ]
-
-}
-
-
-          
-
-       
-    ]   */
-
-   
-  ) ; 
+  const [ data  , setData ] = useState(  []  );
    
   console.log( "hu")  ;
   console.log( data) ; 
 
- 
+   console.log( route.params.userData ) ;
     
 /*    console.log( route.params.userData.name) ;
    console.log( route.params.userData.school_id) ;
@@ -231,7 +43,7 @@ export default function  Home (   {   route , navigation  }) {
 
    
 
-
+/* 
    // to download certificate 
     
    
@@ -283,7 +95,7 @@ async function saveFile(uri, filename, mimetype) {
       alert( err)  ; 
     }
 
-    /* const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+    //const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
     
 
      try {  
@@ -305,12 +117,12 @@ async function saveFile(uri, filename, mimetype) {
   console.error(err) ;
   alert( err) ; 
 
-  }  */
+  }  //
 
   }
 }
 
-
+ */
 
 
 
@@ -325,7 +137,8 @@ async function saveFile(uri, filename, mimetype) {
    const  getmodule = async ( p_name ) => {  
      
     
-
+    const clientTime = new Date() ;
+    console.log(clientTime);
 
    // console.log(   p_name ) ;  
 
@@ -336,7 +149,8 @@ async function saveFile(uri, filename, mimetype) {
       {   method: 'POST',
           headers: {
             'Accept': 'application/json',
-            'Content-type': 'application/json'  ,
+            'Content-type': 'application/json',
+            'X-Client-Time' : clientTime
         }
     , 
     body: JSON.stringify({
@@ -473,7 +287,7 @@ async function saveFile(uri, filename, mimetype) {
 
 
     return (
-      <View   key= { index}   style= { styles.modules}> 
+      <TouchableOpacity   key= { index}   style= { styles.modules}  onPress= {() => {   navigation.navigate( "Module" , {   currentElement  : 0   , screenProp : true   ,   userData : route.params.userData   ,  data : el    ,  moduleNumber : `${index}`    }      ) }} > 
          
 
 
@@ -496,14 +310,14 @@ async function saveFile(uri, filename, mimetype) {
           <Text  style =  { styles.text2 }  > { el.subject_name } </Text> 
           </View> 
              
-          <TouchableOpacity  style =  { { height : "70%"  , width : '25%'   }}    onPress= {() => {   navigation.navigate( "Module" , {   currentElement  : 0   , screenProp : true   ,   userData : route.params.userData   ,  data : el    ,  moduleNumber : `${index}`    }      ) }} > 
+          <View  style =  { { height : "70%"  , width : '25%'   }}   > 
           <MaterialCommunityIcons name="page-next-outline"  size={30}  color={ "#5E82F4"} /> 
 
-          </TouchableOpacity>  
+          </View>  
 
           </View> 
             
-        </View>
+        </TouchableOpacity>
     )
   })
 
@@ -517,7 +331,8 @@ async function saveFile(uri, filename, mimetype) {
         
     <ImageBackground  source={pic2 } resizeMode="cover"  style={styles.image} >  
 
-       
+    <StatusBar  barStyle="dark-content" 
+       backgroundColor="#f1f2f7"  /> 
 
          <View  style={ styles.sidebar}   > 
                 
@@ -553,9 +368,9 @@ async function saveFile(uri, filename, mimetype) {
 
 
 
-                          <TouchableOpacity  style= {{ height : "15%"  , width : "40%" }}  onPress= { download  }   >
+                          <TouchableOpacity  style= {{ height : "15%"  , width : "40%" }}   >
                             
-                          <MaterialCommunityIcons name="certificate"  size={30}  color={ "#B6B7D0"}    onPress= {() => {download()} }      />
+                        <MaterialCommunityIcons name="certificate"  size={30}  color={ "#B6B7D0"}    onPress= {() => { alert("To receive your certificate, please contact your teacher." )} }      />
                           </TouchableOpacity> 
 
 
@@ -626,18 +441,7 @@ async function saveFile(uri, filename, mimetype) {
 
 
 
-  {
-   
-      /*     data.map((el , index ) => { 
-               
-            <View style={ styles.modules }>   
-
-            <TouchableOpacity onPress= {() => {   navigation.navigate( "Player") } }>  
-             <Text> player </Text>   
-             </TouchableOpacity> 
-              </View>
-          })
-     */   
+  { 
           lapsList
       
         } 

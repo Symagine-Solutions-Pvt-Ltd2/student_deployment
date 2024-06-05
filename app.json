@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "student",
-    "slug": "student",
+    "name": "Learn-up",
+    "slug": "Learn-up",
     "version": "1.0.0",
     "orientation": "landscape",
     "icon": "./assets/icon.png",
@@ -17,23 +17,17 @@
     "ios": {
       "supportsTablet": true
     },
-    "android": { 
-  
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.rim908.student" 
-
+    "android": {
+     
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
+    
     "extra": {
       "eas": {
-        "projectId": "15fa586e-d4e0-4700-884a-ffdf127fae6e"
+        "projectId": "f960c6f5-48a2-443b-b372-272891a4f539"
       }
-    } ,
-    "plugins": ["expo-document-picker"]
+    },
+    "plugins": [
+      "expo-document-picker"
+    ]
   }
 }
