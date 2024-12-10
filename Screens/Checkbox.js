@@ -11,9 +11,9 @@ export default function  Checkbox( props) {
 
    
  /*    
- console.log( "checkbox") ;  
- console.log( props.index) ;   
- console.log( props.selectedOption[props.index] ) ;  
+ // console.log( "checkbox") ;  
+ // console.log( props.index) ;   
+ // console.log( props.selectedOption[props.index] ) ;  
  */
     return (
   <Pressable style={ styles.container} onPress={ props.setop} > 

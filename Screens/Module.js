@@ -10,7 +10,7 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import logo_student from "../Images/logo_student.png" ; 
 import vector from "../Images/vector.png" ;   
 import * as DocumentPicker from 'expo-document-picker'; 
-import { Video , ResizeMode } from 'expo-av'
+import { Video , ResizeMode } from 'expo-av' ; 
 import VideoPlayer from 'expo-video-player'
 
 
@@ -28,7 +28,7 @@ export default function  Module (   {   route , navigation  }) {
  
   const [  currentOrigin  , setCurrentOrigin ] = React.useState( null ) ; 
   const [  currentElement  , setCurrentElement  ] = React.useState( route.params.currentElement  ) ;  
-  const [  textAnswer  , setTextAnswer  ] = React.useState( null ) ;  
+  const [  textAnswer  , setTextAnswer  ] = React.useState( "" ) ;  
   const [  isChecked , setIsChecked  ] = React.useState( [] ) ;   // for handling quiz   
   const [  imageUploadUrl   , setImageUploadUrl ] = React.useState( null ) ; 
   const video = React.useRef(null);  
@@ -39,17 +39,17 @@ export default function  Module (   {   route , navigation  }) {
 
 
 
-//  console.log( "module") ; 
- /*  console.log( currentElement) ;
- console.log( route.params.screenProp ) ;  
-  console.log(  route.params.data.module_name) ;  
-  console.log(  route.params.userData ) ;  
-  console.log(  route.params.moduleNumber ) ;
-  console.log( data[currentElement] ) ;
-  console.log( submitButtonStatus) ; */
+      // console.log( "module") ; 
+      // console.log( currentElement) ;
+      // console.log( route.params.screenProp ) ;  
+      // console.log(  route.params.data ) ;  
+      // console.log(  route.params.userData ) ;  
+      // console.log(  route.params.moduleNumber ) ;
+  // console.log( data[currentElement] ) ;
+  // console.log( submitButtonStatus) ; */
      
 
-  //console.log( data[currentElement] ) 
+  //// console.log( data[currentElement] ) 
 
   const  getData = async (  ) => {  
      
@@ -76,7 +76,7 @@ export default function  Module (   {   route , navigation  }) {
       const json = await response.json();
 
         
-       // console.log(   json.data   ) ;  
+        // console.log(   json.data   ) ;  
 
        if(  json.status === "success"){  
             
@@ -85,8 +85,8 @@ export default function  Module (   {   route , navigation  }) {
          tempArr.push( {   name : "Congratulations, you have completed the module."  , sub_type : "complete"  })
 
         
-        console.log(   tempArr.length    ) ;  
-        console.log(   tempArr  ) ;  
+        // console.log(   tempArr.length    ) ;  
+        // console.log(   tempArr  ) ;  
    
              setData( tempArr  )  ;  
        }
@@ -99,7 +99,7 @@ export default function  Module (   {   route , navigation  }) {
     
       
     } catch (error) {
-      console.error(error);
+    //  console.error(error);
     }   
     
   };
@@ -120,8 +120,10 @@ export default function  Module (   {   route , navigation  }) {
 
   const  getAns = async (  ) => {  
        
-    console.log( "getans") ;  
+    // console.log( "getans") ;  
  
+   // console.log(  route.params.userData._id.$oid  ) ;    
+
 
 
     try {
@@ -144,14 +146,14 @@ export default function  Module (   {   route , navigation  }) {
 
        
 
-    //  console.log( json.data) ; 
+     // console.log( json  ) ; 
      const newInfo  = json.data.student_module_details[ route.params.moduleNumber] ; 
   
 
      const newAnsArr  = newInfo[  route.params.data.module_name] ; 
 
-    console.log( "hi") ; 
-     console.log( newAnsArr[   route.params.currentElement]) ; 
+    // console.log( "hi") ; 
+     // console.log( newAnsArr[   route.params.currentElement]) ; 
      
 
 
@@ -165,7 +167,7 @@ export default function  Module (   {   route , navigation  }) {
      }
 
     } catch (error) {
-      console.error(error);
+        console.error(error);
     }   
 
   }
@@ -183,15 +185,15 @@ export default function  Module (   {   route , navigation  }) {
 
 
   
-  React.useEffect(() => { 
+  React.useEffect(() => {   
+
+
     
-    setTextAnswer("Type here...") ; 
-    console.log("useeffect") ;  
-    console.log(  route.params.currentElement  ) ; 
+      setTextAnswer("") ;  
+    // console.log(  route.params.currentElement  ) ; 
     setCurrentElement(  route.params.currentElement );   
-    getData();  
+    getData();    
     getAns();
-    console.log( data[currentElement] )
     
 
 
@@ -237,8 +239,8 @@ export default function  Module (   {   route , navigation  }) {
   const getUrl = async (  result)  => { 
 
    
-   console.log( "geturl") ;  
-   console.log( result ) ;    
+   // console.log( "geturl") ;  
+   // console.log( result ) ;    
  
 
    
@@ -266,7 +268,7 @@ export default function  Module (   {   route , navigation  }) {
       const json = await response.json();
         
 
-          console.log(   json) ;   
+          // console.log(   json) ;   
 
          if(  json.status === "success"){ 
 
@@ -276,7 +278,7 @@ export default function  Module (   {   route , navigation  }) {
           alert( "There was an error. Please try again.") ; 
          }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     } 
 
  
@@ -303,13 +305,13 @@ export default function  Module (   {   route , navigation  }) {
       } 
       
       
-      console.log('Document picked:', result); 
+      // console.log('Document picked:', result); 
       getUrl( result ) ; 
 
     } catch(err) {
           
       alert( "There was an error. Please try again.") ; 
-      console.log("Error picking document: ", err);
+      // console.log("Error picking document: ", err);
     }  
 
   }  
@@ -333,11 +335,11 @@ export default function  Module (   {   route , navigation  }) {
  const  submitPictureToDb = async ()  => { 
  
  
-  console.log( route.params.userData._id  ) ; 
-  console.log( route.params.moduleNumber ) ; 
-  console.log( route.params.data.module_name ) ; 
-  console.log( currentElement) ; 
-  console.log(imageUploadUrl ) ; 
+  // console.log( route.params.userData._id.$oid  ) ; 
+  // console.log( route.params.moduleNumber ) ; 
+  // console.log( route.params.data.module_name ) ; 
+  // console.log( currentElement) ; 
+  // console.log(imageUploadUrl ) ; 
 
 
   const   submit_to_db =  async () => {    
@@ -355,7 +357,7 @@ export default function  Module (   {   route , navigation  }) {
     , 
     body: JSON.stringify({
        
-      "student_id" : route.params.userData._id.$oid   ,
+      "student_id" : route.params.userData._id.$oid  ,
       "module_no":   route.params.moduleNumber , 
       "module_name":  route.params.data.module_name ,  
       "index_no" : `${currentElement}`  ,
@@ -367,7 +369,7 @@ export default function  Module (   {   route , navigation  }) {
       const json = await response.json();
         
 
-          console.log(   json) ;   
+          // console.log(   json) ;   
 
        
           
@@ -498,24 +500,28 @@ export default function  Module (   {   route , navigation  }) {
  const submitTextToDb = async ()  => { 
  
  
-  console.log( route.params.userData._id  ) ; 
-  console.log( route.params.moduleNumber ) ; 
-  console.log( route.params.data.module_name ) ; 
-  console.log( currentElement) ; 
-  console.log( textAnswer ) ;  
-
-
-
+  // console.log( route.params.userData._id.$oid  ) ; 
+  // console.log( route.params.moduleNumber ) ; 
+  // console.log( route.params.data.module_name ) ; 
+  // console.log( currentElement) ; 
+  // console.log( textAnswer ) ;  
   
   let  dateTimeRefresher =   new Date().toLocaleString() ; 
 
   setRefreshScreen( dateTimeRefresher) ; 
 
   //alert( dateTimeRefresher );
+ 
 
-  const   submit_to_db =  async () => {    
-     
-    if(   textAnswer !== "Type here..." ){
+
+
+  const   submit_to_db =  async () => {   
+    
+
+    console.log( "hjhjh") ; 
+    console.log(  textAnswer ) ;
+    
+    if(   textAnswer !== "" ){
 
     
     try {
@@ -540,7 +546,7 @@ export default function  Module (   {   route , navigation  }) {
       const json = await response.json();
         
 
-          console.log(   json) ;   
+         console.log(   json) ;   
 
        
           
@@ -555,7 +561,7 @@ export default function  Module (   {   route , navigation  }) {
 
       }  
       
-       setTextAnswer( null) ;  
+       setTextAnswer( "") ;  
 
 
     } catch (error) {
@@ -565,7 +571,8 @@ export default function  Module (   {   route , navigation  }) {
  
 } else{ 
 
-  alert( "Please write your answer.") ; 
+  alert( "Please write your answer.") ;  
+
 }
   };
    submit_to_db()  ; 
@@ -634,9 +641,9 @@ export default function  Module (   {   route , navigation  }) {
      
 
   //  setCurrentElement(  currentElement-1 )  ;    
-  //  console.log(  data[ currentElement - 1 ].type)  ; 
+  //  // console.log(  data[ currentElement - 1 ].type)  ; 
        
-    //console.log("inprev")  ;
+    //// console.log("inprev")  ;
 
       if(  data[ currentElement - 1 ].sub_type === "quiz"     ) {
            
@@ -654,10 +661,10 @@ export default function  Module (   {   route , navigation  }) {
      
 
   //  setCurrentElement(  currentElement+1 )  ;    
-   // console.log(  data[ currentElement + 1 ].sub_type)  ; 
+   // // console.log(  data[ currentElement + 1 ].sub_type)  ; 
        
     
-   // console.log("innext")  ;
+   // // console.log("innext")  ;
 
       if(  data[ currentElement + 1 ].sub_type === "quiz"     ) {  
 
@@ -1821,11 +1828,13 @@ export default function  Module (   {   route , navigation  }) {
              
 
             <View  style={{ height : "60%"  , width : "75%"   , backgroundColor : '#FFF'  , borderRadius : 20}} > 
-             <TextInput  
-                editable =  { (submitButtonStatus === "yes" )? true : false}
-               defaultValue = { textAnswer } 
+             <TextInput   
+             
+             textAlign={'center'}
+                editable =  { (submitButtonStatus === "yes" )? true : false}   
+                placeholder=  { (submitButtonStatus === "yes" )? "Type here..." :`${textAnswer}`}
              onChangeText = {  setTextAnswer }   
-             style={  { padding : 10  ,  height : "100%"  , width : "100%"  , textAlignVertical : "top"  ,  borderRadius : 20  , color : "black"}}  
+             style={  { padding : 10  ,  height : "100%"  , width : "100%"  , textAlignVertical : "center"  ,  borderRadius : 20  , color : "black"}}  
              multiline   />
              </View>
                

@@ -23,20 +23,20 @@ import * as FileSystem from 'expo-file-system';
 export default function  Home (   {   route , navigation  }) {
      
       
-    console.log(  route.params.userData ) ;  
+    // console.log(  route.params.userData ) ;  
     
 
   const [ data  , setData ] = useState(  []  );
    
-  console.log( "hu")  ;
-  console.log( data) ; 
+  // console.log( "hu")  ;
+  // console.log( data) ; 
 
-   console.log( route.params.userData ) ;
+   // console.log( route.params.userData ) ;
     
-/*    console.log( route.params.userData.name) ;
-   console.log( route.params.userData.school_id) ;
-   console.log( route.params.userData.program_id ) ;   
-   console.log( route.params.userData.student_id ) ; */   
+/*    // console.log( route.params.userData.name) ;
+   // console.log( route.params.userData.school_id) ;
+   // console.log( route.params.userData.program_id ) ;   
+   // console.log( route.params.userData.student_id ) ; */   
 
    
 
@@ -60,7 +60,7 @@ export default function  Home (   {   route , navigation  }) {
     );
   
     // Log the download result
-    console.log(result);
+    // console.log(result);
   
     // Save the downloaded file
     saveFile(result.uri, filename, result.headers["Content-Type"]);
@@ -107,7 +107,7 @@ async function saveFile(uri, filename, mimetype) {
         .then(async (uri) => {
           await FileSystem.writeAsStringAsync(uri, base64, { encoding: FileSystem.EncodingType.Base64 });  
         })
-        .catch(e => console.log(e));
+        .catch(e => // console.log(e));
     }else  {
       Sharing.shareAsync(uri);
     } 
@@ -138,9 +138,9 @@ async function saveFile(uri, filename, mimetype) {
      
     
     const clientTime = new Date() ;
-    console.log(clientTime);
+    // console.log(clientTime);
 
-   // console.log(   p_name ) ;  
+   // // console.log(   p_name ) ;  
 
 
     try {
@@ -163,7 +163,7 @@ async function saveFile(uri, filename, mimetype) {
       const json = await response.json();
 
         
-        console.log(   json  ) ;  
+        // console.log(   json  ) ;  
 
        if(  json.status === "success"){  
          
@@ -171,7 +171,7 @@ async function saveFile(uri, filename, mimetype) {
        }
         else{
        
-           console.log( json.message) ; 
+           // console.log( json.message) ; 
  
        }  
 
@@ -207,7 +207,7 @@ async function saveFile(uri, filename, mimetype) {
       const json = await response.json();
         
 
-    //   console.log(   json) ;   
+    //   // console.log(   json) ;   
        
          
     if(  json.status === "success"){ 
@@ -216,7 +216,7 @@ async function saveFile(uri, filename, mimetype) {
 
       }else{
        
-         console.log( json.message) ; 
+         // console.log( json.message) ; 
 
       }  
       

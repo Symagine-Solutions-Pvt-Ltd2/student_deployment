@@ -41,8 +41,8 @@ export default function  Bplan  (   {   route , navigation  }) {
 
 
 
- // console.log( "in bplan " ) ; 
-      console.log( route.params.userData)  ;  
+ // // console.log( "in bplan " ) ; 
+      // console.log( route.params.userData)  ;  
 
    
        
@@ -53,13 +53,13 @@ export default function  Bplan  (   {   route , navigation  }) {
   const  getAllTask = async ( bp_name  ) => { 
     
     const clientTime = new Date() ;
-    console.log(clientTime);
+    // console.log(clientTime);
      
      let userDetailsIN  = { } ; 
 
 /* 
-    console.log(   bp_name ) ;  
-    console.log( route.params.userData.bp_name)   ;  */ 
+    // console.log(   bp_name ) ;  
+    // console.log( route.params.userData.bp_name)   ;  */ 
 
 
     try {
@@ -81,7 +81,7 @@ export default function  Bplan  (   {   route , navigation  }) {
       const json = await response.json();
       
  
-      //   console.log(   json) ;    
+      //   // console.log(   json) ;    
 
 
        
@@ -94,7 +94,7 @@ export default function  Bplan  (   {   route , navigation  }) {
       }else{
          
 
-         console.log( json.message) ; 
+         // console.log( json.message) ; 
 
       }  
       
@@ -129,14 +129,14 @@ export default function  Bplan  (   {   route , navigation  }) {
       const json = await response.json();
 
       
-      //  console.log(  json.data  ) ;   
-         /*  console.log( userDetailsIN.bp_name ) ;
-        console.log( bp_name ) ; */
+      //  // console.log(  json.data  ) ;   
+         /*  // console.log( userDetailsIN.bp_name ) ;
+        // console.log( bp_name ) ; */
 
 
        if(  json.status === "success"  &&  userDetailsIN.bp_name === ""    ){  
               
-             console.log( "in bplan1") ;
+             // console.log( "in bplan1") ;
              
               setData( json.data )  ;  
 
@@ -144,15 +144,15 @@ export default function  Bplan  (   {   route , navigation  }) {
        }else if(   json.status === "success"    &&   userDetailsIN.bp_name !== ""     &&   userDetailsIN.bp_name === bp_name     ){
   
           
-        console.log( "in bplan2") ;
+        // console.log( "in bplan2") ;
 
         setData( json.data )  ;   
         
-     //   console.log(   userDetailsIN.bp_answer  ) ;    
+     //   // console.log(   userDetailsIN.bp_answer  ) ;    
 
         let newArr = userDetailsIN.bp_answer ; 
 
-        console.log(    newArr.length ) ; 
+        // console.log(    newArr.length ) ; 
           
 
         let tempTextAnswer = []  ; 
@@ -186,8 +186,8 @@ export default function  Bplan  (   {   route , navigation  }) {
        }else if(   json.status === "success"    &&  userDetailsIN.bp_name !== ""     &&   userDetailsIN.bp_name !== bp_name     ){
             
        Alert( "Please check again!")
-        console.log( "in bplan3") ;
-        console.log(  "here"  ) ; 
+        // console.log( "in bplan3") ;
+        // console.log(  "here"  ) ; 
         setData( json.data )  ;    
 
 
@@ -196,7 +196,7 @@ export default function  Bplan  (   {   route , navigation  }) {
 
            
        
-          console.log( json.message) ; 
+          // console.log( json.message) ; 
  
        }  
 
@@ -216,8 +216,8 @@ export default function  Bplan  (   {   route , navigation  }) {
 
   const getBP = async () => {    
 
-    console.log(  "getBp" ) ;
-    console.log( route.params.userData._id ) ; 
+    // console.log(  "getBp" ) ;
+    // console.log( route.params.userData._id.$oid ) ; 
 
    let  piu =  route.params.userData._id.$oid  ; 
 
@@ -242,7 +242,7 @@ export default function  Bplan  (   {   route , navigation  }) {
       const json = await response.json();
         
 
-         // console.log(   json) ;   
+         // // console.log(   json) ;   
        
           
     if(  json.status === "success"){ 
@@ -301,8 +301,8 @@ export default function  Bplan  (   {   route , navigation  }) {
    const  updateAnswer = (  index ,   value ) => {
      
   
-    console.log ( index )  ;   
-    console.log ( value )  ;   
+    // console.log ( index )  ;   
+    // console.log ( value )  ;   
     
     const demoAnswer =  textAnswer ;
     demoAnswer[index]   = value ; 
@@ -320,9 +320,9 @@ export default function  Bplan  (   {   route , navigation  }) {
   const getUrl = async (  result  , index)  => { 
 
    
-    console.log( "geturl") ;  
-    console.log( result ) ;    
-    console.log( index); 
+    // console.log( "geturl") ;  
+    // console.log( result ) ;    
+    // console.log( index); 
  
     
     const   submit_img =  async ( result) => {   
@@ -349,7 +349,7 @@ export default function  Bplan  (   {   route , navigation  }) {
        const json = await response.json();
          
  
-           console.log(   json) ;   
+           // console.log(   json) ;   
  
           if(  json.status === "success"){ 
  
@@ -363,7 +363,7 @@ export default function  Bplan  (   {   route , navigation  }) {
            alert( "There was an error. Please try again.") ; 
           }
      } catch (error) {
-       console.log(error);
+       // console.log(error);
      } 
  
   
@@ -408,7 +408,7 @@ export default function  Bplan  (   {   route , navigation  }) {
      } catch(err) {
            
        alert( "There was an error. Please try again.") ; 
-       console.log("Error picking document: ", err);
+       // console.log("Error picking document: ", err);
      }
      
 
@@ -426,9 +426,9 @@ export default function  Bplan  (   {   route , navigation  }) {
 
   const submitBplan  = async ()  => {
    
-      console.log( textAnswer) ; 
-      console.log( imgAnswer) ; 
-      console.log( data.length) ; 
+      // console.log( textAnswer) ; 
+      // console.log( imgAnswer) ; 
+      // console.log( data.length) ; 
       
 
       let ansObj = [] ;
@@ -446,7 +446,7 @@ export default function  Bplan  (   {   route , navigation  }) {
 
       } 
     
-      console.log( ansObj) ;
+      // console.log( ansObj) ;
        
 
 
@@ -455,7 +455,7 @@ export default function  Bplan  (   {   route , navigation  }) {
       const   submit_bp =  async ( ansObj) => {   
        
 
-        console.log( ansObj) ; 
+        // console.log( ansObj) ; 
       
 
         try {
@@ -479,7 +479,7 @@ export default function  Bplan  (   {   route , navigation  }) {
           const json = await response.json();
             
     
-              console.log(   json) ;   
+              // console.log(   json) ;   
 
            
               
@@ -492,7 +492,7 @@ export default function  Bplan  (   {   route , navigation  }) {
           }else{
              
             alert( json.message) ;
-             console.log( json.message) ; 
+             // console.log( json.message) ; 
     
           }  
           
@@ -516,11 +516,11 @@ export default function  Bplan  (   {   route , navigation  }) {
 
    
 
-    console.log( "download" ) ; 
- /*    console.log( data.length) ;
-    console.log( textAnswer.length) ;
-    console.log( imgAnswer.length) ;
-    console.log( feedback.length ) ; */ 
+    // console.log( "download" ) ; 
+ /*    // console.log( data.length) ;
+    // console.log( textAnswer.length) ;
+    // console.log( imgAnswer.length) ;
+    // console.log( feedback.length ) ; */ 
     
     let downloadContent = [] ; 
 
@@ -545,7 +545,7 @@ export default function  Bplan  (   {   route , navigation  }) {
  
 
 
-    console.log( downloadContent) ;  
+    // console.log( downloadContent) ;  
 
        
     

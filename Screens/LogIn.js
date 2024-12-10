@@ -30,7 +30,7 @@ export default function  LogIn  (  {   route , navigation  }) {
   
 
       const clientTime = new Date() ;
-      console.log( email );
+      // console.log( email );
      
 
      
@@ -62,7 +62,7 @@ body: JSON.stringify({
  const json = await response.json(); 
 
 
-   console.log(json);     
+      console.log(json);     
    
     if(  json.status === "success"){ 
 
@@ -167,7 +167,7 @@ const handlePasswordVisibility   = ()  => {
 
           <View  style={styles.view2}> 
 
-            <TextInput>Forget password ? contact your facilitator</TextInput> 
+            <Text>Forget password ? contact your facilitator</Text> 
 
           </View>
 

@@ -26,11 +26,11 @@ export default function  Answers  (   {   route , navigation  }) {
 
 
  
-  console.log( "Answers") ; 
-  console.log( route.params.data ) ; 
-  console.log(  route.params.score) ;   
-  console.log(  route.params.userData) ; 
-  console.log(  route.params.moduledetails.module_name ) ; 
+  // console.log( "Answers") ; 
+  // console.log( route.params.data ) ; 
+  // console.log(  route.params.score) ;   
+  // console.log(  route.params.userData) ; 
+  // console.log(  route.params.moduledetails.module_name ) ; 
    
 
 

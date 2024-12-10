@@ -32,16 +32,16 @@ export default function  Quiz  (   {   route , navigation  }) {
    const[  quizScore  , setQuizScore ] = useState("" );
 
    
-  console.log( "quiz") ; 
-  console.log(  route.params.currentElement) ; 
-  console.log( route.params.totalLength  ) ; 
- // console.log(   route.params.userData ) ;  
- // console.log(   route.params.screenProp ) ; 
+  // console.log( "quiz") ; 
+  // console.log(  route.params.currentElement) ; 
+  // console.log( route.params.totalLength  ) ; 
+ // // console.log(   route.params.userData ) ;  
+ // // console.log(   route.params.screenProp ) ; 
 
-  console.log(  route.params.data) ;   
-  console.log(  route.params.moduleNumber ) ; 
-  console.log( route.params.moduledetails ) ;
- // console.log(   route.params.data[ route.params.currentElement].quiz_data.length ) ; 
+  // console.log(  route.params.data) ;   
+  // console.log(  route.params.moduleNumber ) ; 
+  // console.log( route.params.moduledetails ) ;
+ // // console.log(   route.params.data[ route.params.currentElement].quiz_data.length ) ; 
   
   
 
@@ -67,7 +67,7 @@ export default function  Quiz  (   {   route , navigation  }) {
   // to get and check  quiz already submitted or not 
    const  getAns = async (  ) => {  
        
-    console.log( "getans") ;       
+    // console.log( "getans") ;       
 
 
     try {
@@ -89,7 +89,7 @@ export default function  Quiz  (   {   route , navigation  }) {
       const json = await response.json();
 
       
-    // console.log( json.data.student_module_details[ route.params.moduleNumber]) ; 
+    // // console.log( json.data.student_module_details[ route.params.moduleNumber]) ; 
      const newInfo  = json.data.student_module_details[ route.params.moduleNumber] ; 
   
 
@@ -98,8 +98,8 @@ export default function  Quiz  (   {   route , navigation  }) {
 
 
 
-     console.log( "hi") ; 
-     console.log( newAnsArr[   route.params.currentElement]) ; 
+     // console.log( "hi") ; 
+     // console.log( newAnsArr[   route.params.currentElement]) ; 
 
 
      if(  newAnsArr[ route.params.currentElement ]  === "" ){
@@ -126,7 +126,7 @@ export default function  Quiz  (   {   route , navigation  }) {
 
  React.useEffect(() => { 
     
-  console.log("useeffect") ; 
+  // console.log("useeffect") ; 
  // setCurrentElement(  route.params.currentElement );   
   //getData();  
   getAns();
@@ -151,7 +151,7 @@ export default function  Quiz  (   {   route , navigation  }) {
 
   const handlePrevButton = (  ) => {
     
-    //  console.log(    route.params.data[ route.params.currentElement - 1].sub_type )  ;
+    //  // console.log(    route.params.data[ route.params.currentElement - 1].sub_type )  ;
      
       if(   route.params.data[ route.params.currentElement - 1].sub_type === "quiz"){
        
@@ -206,11 +206,11 @@ export default function  Quiz  (   {   route , navigation  }) {
       const   handleSelectOption = (  index  , value  ) => {
 
 
-     /*    console.log( "handleSelectOption") ; 
-        console.log( index) ;
-        console.log( value) ; 
-        console.log( isChecked) ;  
-        console.log( quizarr) ;
+     /*    // console.log( "handleSelectOption") ; 
+        // console.log( index) ;
+        // console.log( value) ; 
+        // console.log( isChecked) ;  
+        // console.log( quizarr) ;
          */
        const newarr = [...isChecked ];
        newarr[index] = true ;
@@ -232,11 +232,11 @@ export default function  Quiz  (   {   route , navigation  }) {
 
     const   submitQuizScore  =  async ( score  ) => {   
         
-      console.log( route.params.userData._id  ) ; 
-      console.log( route.params.moduleNumber ) ; 
-      console.log(route.params.moduledetails.module_name ) ; 
-      console.log( `${route.params.currentElement}` ) ; 
-      console.log( score) ; 
+      // console.log( route.params.userData._id.$oid  ) ; 
+      // console.log( route.params.moduleNumber ) ; 
+      // console.log(route.params.moduledetails.module_name ) ; 
+      // console.log( `${route.params.currentElement}` ) ; 
+      // console.log( score) ; 
          
 
 
@@ -263,7 +263,7 @@ export default function  Quiz  (   {   route , navigation  }) {
         const json = await response.json();
           
   
-            console.log(   json) ;   
+            // console.log(   json) ;   
   
          
             
@@ -304,41 +304,41 @@ export default function  Quiz  (   {   route , navigation  }) {
 
      const  handleQuizSubmit = (  ) => {
      
-     // console.log( "bhjz") ;
+     // // console.log( "bhjz") ;
       let score =0 ;
 
       for(  let i=0  ; i< DATA_quiz.length ; i++ ){
           
-        /* console.log( DATA_quiz[i]) ;
-        console.log( DATA_quiz[i].final1.option1 ) ;
-        console.log( quizarr[i] ) ;
-        console.log( DATA_quiz[i].final1.answer1 ) ; */
+        /* // console.log( DATA_quiz[i]) ;
+        // console.log( DATA_quiz[i].final1.option1 ) ;
+        // console.log( quizarr[i] ) ;
+        // console.log( DATA_quiz[i].final1.answer1 ) ; */
 
          if( DATA_quiz[i].final1.option1 === quizarr[i]  &&  DATA_quiz[i].final1.answer1 === "true" ){
 
                score++ ;  
-           //    console.log( "1") ;
+           //    // console.log( "1") ;
 
          } else if(  DATA_quiz[i].final2.option2 === quizarr[i]  &&  DATA_quiz[i].final2.answer2 === "true"  ){
   
           score++ ; 
-       //   console.log( "2") ;
+       //   // console.log( "2") ;
 
         }else if( DATA_quiz[i].final3.option3 === quizarr[i]  &&  DATA_quiz[i].final3.answer3 === "true"  ){
 
           score++ ; 
-       //   console.log( "3") ;
+       //   // console.log( "3") ;
 
            }
 
       }  
-      console.log( "score" ) ;   
+      // console.log( "score" ) ;   
       
-       console.log( score ) ;   
+       // console.log( score ) ;   
       
       let finalScore   =  (score*100)/n  ;   
        
-      console.log( finalScore) ;
+      // console.log( finalScore) ;
       submitQuizScore(  finalScore )  ;
 
     
